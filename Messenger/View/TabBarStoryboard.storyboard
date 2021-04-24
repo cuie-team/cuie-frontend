@@ -10,20 +10,33 @@
     </dependencies>
     <scenes>
         <!--Contact-->
-        <scene sceneID="5qP-YD-K0A">
+        <scene sceneID="ZCL-0C-db0">
             <objects>
-                <viewController id="VYl-dh-VO3" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="TIS-vG-1P4">
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Jvv-ZJ-Mid" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <tableViewController id="Tde-Rp-dj2" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="jHI-ab-6he">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <viewLayoutGuide key="safeArea" id="E0Z-lx-z7m"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                    </view>
-                    <tabBarItem key="tabBarItem" title="Contact" image="person.2" catalog="system" id="Dov-cD-a95"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="hdl-lS-fX2" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="U1K-TR-SiA">
+                                <rect key="frame" x="0.0" y="28" width="414" height="43.5"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="U1K-TR-SiA" id="ySB-5W-bc3">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="Tde-Rp-dj2" id="olo-qn-Igh"/>
+                            <outlet property="delegate" destination="Tde-Rp-dj2" id="csG-Wa-L2U"/>
+                        </connections>
+                    </tableView>
+                    <tabBarItem key="tabBarItem" title="Contact" image="person.2" catalog="system" id="2Op-oq-Ur8"/>
+                </tableViewController>
             </objects>
-            <point key="canvasLocation" x="2586.9565217391305" y="-163.39285714285714"/>
+            <point key="canvasLocation" x="2587" y="-185"/>
         </scene>
         <!--FeedViewVC-->
         <scene sceneID="2a7-cn-yev">
@@ -111,7 +124,7 @@
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Feed" image="network" catalog="system" id="LLd-ko-W7r"/>
-                    <navigationItem key="navigationItem" id="U0K-a3-7MI"/>
+                    <navigationItem key="navigationItem" id="U0K-a3-7MI" userLabel="Feed"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="tableView" destination="IfC-nA-k8B" id="4Pp-cv-eXM"/>
@@ -320,9 +333,9 @@
                     </tabBar>
                     <connections>
                         <segue destination="N7G-8a-8Pi" kind="relationship" relationship="viewControllers" id="peF-hM-p9u"/>
-                        <segue destination="VYl-dh-VO3" kind="relationship" relationship="viewControllers" id="8Ux-Pn-hlV"/>
                         <segue destination="n7H-Nv-E0L" kind="relationship" relationship="viewControllers" id="Ay4-Ii-nDB"/>
-                        <segue destination="5ra-a8-iSr" kind="relationship" relationship="viewControllers" id="aaX-yC-qer"/>
+                        <segue destination="Tde-Rp-dj2" kind="relationship" relationship="viewControllers" id="MzC-ne-flw"/>
+                        <segue destination="5ra-a8-iSr" kind="relationship" relationship="viewControllers" id="ydE-nR-y4c"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="53n-fq-yiY" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

@@ -37,7 +37,7 @@ class LoginViewController: UIViewController {
         
         updateUIFor(login: true)
         
-        setupTextFieldDelegates()
+//        setupTextFieldDelegates()
         setupStyle()
         setupBackgroundTap()
         
@@ -59,9 +59,7 @@ class LoginViewController: UIViewController {
             
         }
         if sender.titleLabel?.text == "Register" {
-            if signUp() {
-                
-            }
+            signUp()
         }
     }
     
@@ -74,17 +72,17 @@ class LoginViewController: UIViewController {
     
     @IBAction func unwindLogin(segue: UIStoryboardSegue) { } 
     
-    @objc func textFieldDidChange(_ textField: UITextField){
+    @objc func textFieldDidChange(_ textField: UITextField) {
         
     }
     
     //Mark Set up
-    private func setupTextFieldDelegates(){
-        StudentNumberTextField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
-        
-        PasswordTextField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
-       
-    }
+//    private func setupTextFieldDelegates(){
+//        StudentNumberTextField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
+//
+//        PasswordTextField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
+//
+//    }
     
     private func setupBackgroundTap() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(backgroundTap))
@@ -164,7 +162,7 @@ extension LoginViewController: UIPickerViewDataSource, UIPickerViewDelegate {
 }
 
 extension LoginViewController {
-    private func signUp() -> Bool {
+    private func signUp() {
         let registerParams: [String: String?] = [
             "name": NameTextField.text,
             "surname": SurnameTextField.text,
@@ -173,42 +171,44 @@ extension LoginViewController {
             "password": PasswordTextField.text,
             "status": StatusTextField.text
         ]
-        let request = AF.request("https://9ef7ffe9-4841-4089-ba5a-ee467082da30.mock.pstmn.io/users/signup", method: .post, parameters: registerParams)
+        let request = AF.request("http://35.213.134.44:3000/users/signup", method: .post, parameters: registerParams)
         
-        var success: Bool = false
+        
         
         request.responseJSON { (data) in
-            print(data)
             if let code = data.response?.statusCode {
                 switch code {
-                case 200:
-                    success = true
-                default:
-                    success = false
+                case 200: break
+                default: break
                 }
             }
         }
-        return success
     }
     
     private func logIn() {
-        let logInParams: [String: String?] = [
-            "userID": StudentNumberTextField.text,
-            "password": PasswordTextField.text,
-        ]
-        let request = AF.request("https://9ef7ffe9-4841-4089-ba5a-ee467082da30.mock.pstmn.io/users/signin", method: .post, parameters: logInParams)
+        let parameter = User(userID: "6231373621", password: "cpcudev123")
         
-        createSpinnerView()
+        let request = AF.request("http://35.213.134.44:3000/users/signin", method: .post, parameters: parameter, encoder: JSONParameterEncoder.default)
         
-        request.responseJSON { (data) in
-            switch data.result {
-            case .success(_):
-                self.changeToHome()
-            case .failure(_):
-                self.presentAlert()
+        print(StudentNumberTextField.text!, PasswordTextField.text!)
+        
+        request.responseJSON { (response) in
+            if let code = response.response?.statusCode {
+                switch code {
+                case 200:
+                    self.createSpinnerView { }
+                    self.changeToHome()
+                default:
+                    self.createSpinnerView {
+                        self.presentAlert()
+                    }
+                }
+            } else {
+                print("asdasd")
             }
-        }
             
+            debugPrint(response)
+        }
     }
     
     
@@ -220,7 +220,7 @@ extension LoginViewController {
         self.navigationController?.pushViewController(homeView, animated: true)
     }
     
-    private func createSpinnerView() {
+    private func createSpinnerView(​_ completion: @escaping () -> Void) {
         let child = SpinnerViewController()
         
         // add the spinner view controller
@@ -229,12 +229,13 @@ extension LoginViewController {
         view.addSubview(child.view)
         child.didMove(toParent: self)
         
-        // wait two seconds to simulate some work happening
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+        // wait three seconds to simulate some work happening
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             // then remove the spinner view controller
             child.willMove(toParent: nil)
             child.view.removeFromSuperview()
             child.removeFromParent()
+            completion()
         }
     }
     

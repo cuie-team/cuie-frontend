@@ -115,9 +115,9 @@
 			children = (
 				F2E3239925C14DB60075EB2A /* AppDelegate.swift */,
 				F2E3239B25C14DB60075EB2A /* SceneDelegate.swift */,
+				F2887A1325E398A700B53DD6 /* Model */,
 				22CB0B66260A6DAE00C51092 /* View */,
 				2248A06E2609FD6C0083AE7F /* Controller */,
-				F2887A1325E398A700B53DD6 /* Model */,
 				F2E323A225C14DB70075EB2A /* Assets.xcassets */,
 				F2E323A725C14DB70075EB2A /* Info.plist */,
 			);

@@ -186,29 +186,33 @@ extension LoginViewController {
     }
     
     private func logIn() {
-        let parameter = User(userID: "6231373621", password: "cpcudev123")
-        
-        let request = AF.request("http://35.213.134.44:3000/users/signin", method: .post, parameters: parameter, encoder: JSONParameterEncoder.default)
-        
-        print(StudentNumberTextField.text!, PasswordTextField.text!)
-        
-        request.responseJSON { (response) in
-            if let code = response.response?.statusCode {
-                switch code {
-                case 200:
-                    self.createSpinnerView { }
-                    self.changeToHome()
-                default:
-                    self.createSpinnerView {
-                        self.presentAlert()
-                    }
-                }
-            } else {
-                print("asdasd")
-            }
-            
-            debugPrint(response)
+//        let parameter = User(userID: "6231373621", password: "cpcudev123")
+//
+//        let request = AF.request("http://35.213.134.44:3000/users/signin", method: .post, parameters: parameter, encoder: JSONParameterEncoder.default)
+//
+//        print(StudentNumberTextField.text!, PasswordTextField.text!)
+//
+//        request.responseJSON { (response) in
+//            if let code = response.response?.statusCode {
+//                switch code {
+//                case 200:
+//                    self.createSpinnerView { }
+//                    self.changeToHome()
+//                default:
+//                    self.createSpinnerView {
+//                        self.presentAlert()
+//                    }
+//                }
+//            } else {
+//                print("asdasd")
+//            }
+//
+//            debugPrint(response)
+//        }
+        self.createSpinnerView {
+            self.changeToHome()
         }
+       
     }
     
     

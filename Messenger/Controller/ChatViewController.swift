@@ -18,6 +18,8 @@ class ChatViewController: UIViewController {
         
         chatTable.delegate = self
         chatTable.dataSource = self
+        
+        navigationItem.backButtonDisplayMode = .minimal
     }
 
 }

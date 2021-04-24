@@ -18,6 +18,7 @@
 		22F0E3632634315100851E47 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22F0E3622634315100851E47 /* Message.swift */; };
 		22F0E36626346CE000851E47 /* Media.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22F0E36526346CE000851E47 /* Media.swift */; };
 		22F0E36926347D1300851E47 /* PhotoViewerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22F0E36826347D1300851E47 /* PhotoViewerController.swift */; };
+		22F0E36D263497AD00851E47 /* UIImageCustom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22F0E36C263497AC00851E47 /* UIImageCustom.swift */; };
 		C9F11655D28EADCE5D759A92 /* Pods_Messenger.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BAB619EEE338A9DE052DB654 /* Pods_Messenger.framework */; };
 		F2887A0E25DA5C6500B53DD6 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2887A0D25DA5C6500B53DD6 /* SettingsTableViewController.swift */; };
 		F2887A1125E3989B00B53DD6 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2887A1025E3989B00B53DD6 /* User.swift */; };
@@ -40,6 +41,7 @@
 		22F0E3622634315100851E47 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		22F0E36526346CE000851E47 /* Media.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Media.swift; sourceTree = "<group>"; };
 		22F0E36826347D1300851E47 /* PhotoViewerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoViewerController.swift; sourceTree = "<group>"; };
+		22F0E36C263497AC00851E47 /* UIImageCustom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageCustom.swift; sourceTree = "<group>"; };
 		78AE80725C1199E44D57BFA4 /* Pods-Messenger.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Messenger.debug.xcconfig"; path = "Target Support Files/Pods-Messenger/Pods-Messenger.debug.xcconfig"; sourceTree = "<group>"; };
 		BAB619EEE338A9DE052DB654 /* Pods_Messenger.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Messenger.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB25BAF0F3BE337B62C90030 /* Pods-Messenger.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Messenger.release.xcconfig"; path = "Target Support Files/Pods-Messenger/Pods-Messenger.release.xcconfig"; sourceTree = "<group>"; };
@@ -90,6 +92,14 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		22F0E36B2634978D00851E47 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				22F0E36C263497AC00851E47 /* UIImageCustom.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
 		2A60D6C13D4CAEE994777306 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -133,6 +143,7 @@
 			children = (
 				F2E3239925C14DB60075EB2A /* AppDelegate.swift */,
 				F2E3239B25C14DB60075EB2A /* SceneDelegate.swift */,
+				22F0E36B2634978D00851E47 /* Utils */,
 				F2887A1325E398A700B53DD6 /* Model */,
 				22CB0B66260A6DAE00C51092 /* View */,
 				2248A06E2609FD6C0083AE7F /* Controller */,
@@ -275,6 +286,7 @@
 				F2E3239A25C14DB60075EB2A /* AppDelegate.swift in Sources */,
 				2248A075260A0AC90083AE7F /* TabBarController.swift in Sources */,
 				F2887A1125E3989B00B53DD6 /* User.swift in Sources */,
+				22F0E36D263497AD00851E47 /* UIImageCustom.swift in Sources */,
 				2248A08B260A57520083AE7F /* SpinnerViewController.swift in Sources */,
 				22F0E3632634315100851E47 /* Message.swift in Sources */,
 				22CB0B6A260CB5E300C51092 /* FeedViewController.swift in Sources */,

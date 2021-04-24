@@ -61,7 +61,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="95"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="YAt-yR-uUw">
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="avatar" translatesAutoresizingMaskIntoConstraints="NO" id="YAt-yR-uUw">
                                                     <rect key="frame" x="20" y="11" width="50" height="50"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="50" id="EIq-Fp-g88"/>
@@ -317,13 +317,56 @@
                                 <rect key="frame" x="0.0" y="88" width="414" height="725"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="chat_cell" id="7WZ-dR-CKE">
-                                        <rect key="frame" x="0.0" y="28" width="414" height="43.5"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="chat_cell" rowHeight="76" id="7WZ-dR-CKE" customClass="ChatViewCellController" customModule="Messenger" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="414" height="76"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="7WZ-dR-CKE" id="ax0-do-ibD">
-                                            <rect key="frame" x="0.0" y="0.0" width="383" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="383" height="76"/>
                                             <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="avatar" translatesAutoresizingMaskIntoConstraints="NO" id="Sbl-9B-LeG">
+                                                    <rect key="frame" x="20" y="13" width="50" height="50"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="50" id="c9k-2F-gyu"/>
+                                                        <constraint firstAttribute="height" constant="50" id="pdU-cd-wpd"/>
+                                                    </constraints>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xnR-xl-yZr">
+                                                    <rect key="frame" x="80" y="16" width="45" height="20.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Description" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vBh-rE-UwA">
+                                                    <rect key="frame" x="80" y="42" width="65" height="15"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mMc-Ml-RKc">
+                                                    <rect key="frame" x="338.5" y="16" width="26.5" height="14.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="xnR-xl-yZr" firstAttribute="leading" secondItem="Sbl-9B-LeG" secondAttribute="trailing" constant="10" id="5f5-sO-7NV"/>
+                                                <constraint firstItem="Sbl-9B-LeG" firstAttribute="leading" secondItem="ax0-do-ibD" secondAttribute="leadingMargin" id="8yS-kJ-95V"/>
+                                                <constraint firstItem="vBh-rE-UwA" firstAttribute="top" secondItem="xnR-xl-yZr" secondAttribute="bottom" constant="5.5" id="FdX-Qg-wM9"/>
+                                                <constraint firstItem="xnR-xl-yZr" firstAttribute="top" secondItem="ax0-do-ibD" secondAttribute="topMargin" constant="5" id="Nxh-81-98O"/>
+                                                <constraint firstItem="vBh-rE-UwA" firstAttribute="leading" secondItem="Sbl-9B-LeG" secondAttribute="trailing" constant="10" id="add-SF-2YT"/>
+                                                <constraint firstItem="Sbl-9B-LeG" firstAttribute="centerY" secondItem="ax0-do-ibD" secondAttribute="centerY" id="i1u-DN-6Rc"/>
+                                                <constraint firstItem="mMc-Ml-RKc" firstAttribute="top" secondItem="ax0-do-ibD" secondAttribute="topMargin" constant="5" id="sI2-Ct-EQK"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="mMc-Ml-RKc" secondAttribute="trailing" constant="10" id="wH9-7S-ol5"/>
+                                            </constraints>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="avatar" destination="Sbl-9B-LeG" id="DIL-vf-RnB"/>
+                                            <outlet property="date" destination="mMc-Ml-RKc" id="g7b-Cu-rje"/>
+                                            <outlet property="detail" destination="vBh-rE-UwA" id="P94-9Z-tLa"/>
+                                            <outlet property="name" destination="xnR-xl-yZr" id="g5A-F2-XTz"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                                 <sections/>
@@ -332,7 +375,7 @@
                         <viewLayoutGuide key="safeArea" id="k2u-U7-g1L"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="k2u-U7-g1L" firstAttribute="bottom" secondItem="rBi-Sd-s35" secondAttribute="bottom" id="Ufr-At-4pP"/>
+                            <constraint firstItem="rBi-Sd-s35" firstAttribute="bottom" secondItem="k2u-U7-g1L" secondAttribute="bottom" id="DGI-x3-Nla"/>
                             <constraint firstItem="k2u-U7-g1L" firstAttribute="trailing" secondItem="rBi-Sd-s35" secondAttribute="trailing" id="e9J-aI-vng"/>
                             <constraint firstItem="rBi-Sd-s35" firstAttribute="top" secondItem="k2u-U7-g1L" secondAttribute="top" id="eQK-zF-5Zp"/>
                             <constraint firstItem="rBi-Sd-s35" firstAttribute="leading" secondItem="k2u-U7-g1L" secondAttribute="leading" id="u9z-dB-t0P"/>

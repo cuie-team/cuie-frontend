@@ -12,6 +12,13 @@
 		2248A08B260A57520083AE7F /* SpinnerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2248A08A260A57520083AE7F /* SpinnerViewController.swift */; };
 		22AF1399261073C000858D21 /* Feed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AF1398261073C000858D21 /* Feed.swift */; };
 		22CB0B6A260CB5E300C51092 /* FeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CB0B69260CB5E300C51092 /* FeedViewController.swift */; };
+		22F0E352263428C200851E47 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22F0E351263428C200851E47 /* ChatViewController.swift */; };
+		22F0E35D26342F6700851E47 /* MessageBoardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22F0E35C26342F6700851E47 /* MessageBoardViewController.swift */; };
+		22F0E36026342FE200851E47 /* Sender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22F0E35F26342FE200851E47 /* Sender.swift */; };
+		22F0E3632634315100851E47 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22F0E3622634315100851E47 /* Message.swift */; };
+		22F0E36626346CE000851E47 /* Media.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22F0E36526346CE000851E47 /* Media.swift */; };
+		22F0E36926347D1300851E47 /* PhotoViewerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22F0E36826347D1300851E47 /* PhotoViewerController.swift */; };
+		22F0E36D263497AD00851E47 /* UIImageCustom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22F0E36C263497AC00851E47 /* UIImageCustom.swift */; };
 		C9F11655D28EADCE5D759A92 /* Pods_Messenger.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BAB619EEE338A9DE052DB654 /* Pods_Messenger.framework */; };
 		F260C9C12633FA28006E7E81 /* ContactTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F260C9C02633FA28006E7E81 /* ContactTableViewCell.swift */; };
 		F260C9C42633FA90006E7E81 /* ContactTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F260C9C32633FA90006E7E81 /* ContactTableViewController.swift */; };
@@ -32,6 +39,13 @@
 		2248A08A260A57520083AE7F /* SpinnerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpinnerViewController.swift; sourceTree = "<group>"; };
 		22AF1398261073C000858D21 /* Feed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Feed.swift; sourceTree = "<group>"; };
 		22CB0B69260CB5E300C51092 /* FeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewController.swift; sourceTree = "<group>"; };
+		22F0E351263428C200851E47 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
+		22F0E35C26342F6700851E47 /* MessageBoardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageBoardViewController.swift; sourceTree = "<group>"; };
+		22F0E35F26342FE200851E47 /* Sender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sender.swift; sourceTree = "<group>"; };
+		22F0E3622634315100851E47 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
+		22F0E36526346CE000851E47 /* Media.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Media.swift; sourceTree = "<group>"; };
+		22F0E36826347D1300851E47 /* PhotoViewerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoViewerController.swift; sourceTree = "<group>"; };
+		22F0E36C263497AC00851E47 /* UIImageCustom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageCustom.swift; sourceTree = "<group>"; };
 		78AE80725C1199E44D57BFA4 /* Pods-Messenger.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Messenger.debug.xcconfig"; path = "Target Support Files/Pods-Messenger/Pods-Messenger.debug.xcconfig"; sourceTree = "<group>"; };
 		BAB619EEE338A9DE052DB654 /* Pods_Messenger.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Messenger.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB25BAF0F3BE337B62C90030 /* Pods-Messenger.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Messenger.release.xcconfig"; path = "Target Support Files/Pods-Messenger/Pods-Messenger.release.xcconfig"; sourceTree = "<group>"; };
@@ -70,9 +84,14 @@
 				2248A074260A0AC90083AE7F /* TabBarController.swift */,
 				2248A08A260A57520083AE7F /* SpinnerViewController.swift */,
 				22CB0B69260CB5E300C51092 /* FeedViewController.swift */,
+
+				22F0E351263428C200851E47 /* ChatViewController.swift */,
+				22F0E35C26342F6700851E47 /* MessageBoardViewController.swift */,
+				22F0E36826347D1300851E47 /* PhotoViewerController.swift */,
 				F260C9C02633FA28006E7E81 /* ContactTableViewCell.swift */,
 				F260C9C32633FA90006E7E81 /* ContactTableViewController.swift */,
 				F2A580462637293D001B0DA3 /* ProfileTableViewController.swift */,
+
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -84,6 +103,14 @@
 				2248A077260A10750083AE7F /* TabBarStoryboard.storyboard */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		22F0E36B2634978D00851E47 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				22F0E36C263497AC00851E47 /* UIImageCustom.swift */,
+			);
+			path = Utils;
 			sourceTree = "<group>";
 		};
 		2A60D6C13D4CAEE994777306 /* Frameworks */ = {
@@ -99,7 +126,12 @@
 			children = (
 				F2887A1025E3989B00B53DD6 /* User.swift */,
 				22AF1398261073C000858D21 /* Feed.swift */,
+
+				22F0E35F26342FE200851E47 /* Sender.swift */,
+				22F0E3622634315100851E47 /* Message.swift */,
+				22F0E36526346CE000851E47 /* Media.swift */,
 				F260C9C626343174006E7E81 /* Contact.swift */,
+
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -127,9 +159,10 @@
 			children = (
 				F2E3239925C14DB60075EB2A /* AppDelegate.swift */,
 				F2E3239B25C14DB60075EB2A /* SceneDelegate.swift */,
+				22F0E36B2634978D00851E47 /* Utils */,
+				F2887A1325E398A700B53DD6 /* Model */,
 				22CB0B66260A6DAE00C51092 /* View */,
 				2248A06E2609FD6C0083AE7F /* Controller */,
-				F2887A1325E398A700B53DD6 /* Model */,
 				F2E323A225C14DB70075EB2A /* Assets.xcassets */,
 				F2E323A725C14DB70075EB2A /* Info.plist */,
 			);
@@ -262,15 +295,22 @@
 				F260C9C726343174006E7E81 /* Contact.swift in Sources */,
 				F2887A0E25DA5C6500B53DD6 /* SettingsTableViewController.swift in Sources */,
 				22AF1399261073C000858D21 /* Feed.swift in Sources */,
+				22F0E36626346CE000851E47 /* Media.swift in Sources */,
 				F2E3239E25C14DB60075EB2A /* LoginViewController.swift in Sources */,
+				22F0E35D26342F6700851E47 /* MessageBoardViewController.swift in Sources */,
+				22F0E36926347D1300851E47 /* PhotoViewerController.swift in Sources */,
+				22F0E36026342FE200851E47 /* Sender.swift in Sources */,
 				F2E3239A25C14DB60075EB2A /* AppDelegate.swift in Sources */,
 				2248A075260A0AC90083AE7F /* TabBarController.swift in Sources */,
 				F2887A1125E3989B00B53DD6 /* User.swift in Sources */,
+				22F0E36D263497AD00851E47 /* UIImageCustom.swift in Sources */,
+				2248A08B260A57520083AE7F /* SpinnerViewController.swift in Sources */,
+				22F0E3632634315100851E47 /* Message.swift in Sources */,
 				F260C9C12633FA28006E7E81 /* ContactTableViewCell.swift in Sources */,
 				F2A580472637293D001B0DA3 /* ProfileTableViewController.swift in Sources */,
-				2248A08B260A57520083AE7F /* SpinnerViewController.swift in Sources */,
 				F260C9C42633FA90006E7E81 /* ContactTableViewController.swift in Sources */,
 				22CB0B6A260CB5E300C51092 /* FeedViewController.swift in Sources */,
+				22F0E352263428C200851E47 /* ChatViewController.swift in Sources */,
 				F2E3239C25C14DB60075EB2A /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

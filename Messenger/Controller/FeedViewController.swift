@@ -29,8 +29,7 @@ class FeedViewController: UIViewController {
 
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.estimatedRowHeight = 100
-        tableView.rowHeight = UITableView.automaticDimension
+
     }
 
 }

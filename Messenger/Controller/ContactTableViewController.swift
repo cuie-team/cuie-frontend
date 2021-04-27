@@ -12,12 +12,13 @@ class ContactTableViewController: UITableViewController, UISearchResultsUpdating
 
     //Mark - Vars
     
-    var allContact: [ContactInfo] = []
-    var filteredContact: [ContactInfo] = []
+    private var allContact: [ContactInfo] = []
+    private var filteredContact: [ContactInfo] = []
     
-    let searchController = UISearchController(searchResultsController: nil)
+    private let searchController = UISearchController(searchResultsController: nil)
+    var pullControl: UIRefreshControl!
     
-    let contacts: [ContactInfo] = [
+    private let contacts: [ContactInfo] = [
         ContactInfo(name: "Tee", surname: "lert", status: "4th yrs", userID: "6030293121", email: "tee101@gmail.com"),
         ContactInfo(name: "Pun", surname: "thana", status: "4th yrs", userID: "6030024721", email: "Pun101@gmail.com"),
         ContactInfo(name: "Aj", surname: "P", status: "Faculty member", userID: "603012341", email: "Aj101@gmail.com")
@@ -26,10 +27,7 @@ class ContactTableViewController: UITableViewController, UISearchResultsUpdating
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.refreshControl = UIRefreshControl()
-        self.tableView.refreshControl = self.refreshControl
-        
+        setupReload()
         tableView.tableFooterView = UIView()
         SetupSearchController()
 
@@ -66,6 +64,21 @@ class ContactTableViewController: UITableViewController, UISearchResultsUpdating
         
     }
     
+    //MARK: - setup pull down refersh action
+    @objc func refresh(_ sender: AnyObject) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            self.allContact = self.contacts
+            self.tableView.reloadData()
+            self.pullControl.endRefreshing()
+        }
+    }
+    
+    private func setupReload() {
+        pullControl = UIRefreshControl()
+        pullControl.addTarget(self, action: #selector(refresh(_:)), for: .valueChanged)
+        self.tableView.refreshControl = pullControl
+    }
+    
     //Mark - set up searching contact
     private func SetupSearchController() {
         navigationItem.searchController = searchController
@@ -89,10 +102,11 @@ class ContactTableViewController: UITableViewController, UISearchResultsUpdating
     //Mark - Navigation
     private func showUserProfile(_ contact: ContactInfo) {
         
-        let ProfileView = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(identifier:  "ProfileView") as! ProfileTableViewController
+        let board = UIStoryboard(name: "TabBarStoryboard", bundle: nil)
+        guard let profileView = board.instantiateViewController(identifier: "ProfileView") as? ProfileTableViewController else { return }
         
-        ProfileView.contact = contact
-        self.navigationController?.pushViewController(ProfileView, animated: true)
+        profileView.contact = contact
+        self.navigationController?.pushViewController(profileView, animated: true)
     }
     
 }

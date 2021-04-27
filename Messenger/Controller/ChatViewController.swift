@@ -22,6 +22,7 @@ class ChatViewController: UIViewController {
         intervals.sort(by: >)
         
         navigationItem.backButtonDisplayMode = .minimal
+        
     }
 }
 

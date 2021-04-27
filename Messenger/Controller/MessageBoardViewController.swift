@@ -63,6 +63,7 @@ class MessageBoardViewController: MessagesViewController {
         messagesCollectionView.messagesLayoutDelegate = self
         messagesCollectionView.messagesDisplayDelegate = self
         messagesCollectionView.messageCellDelegate = self
+        navigationItem.largeTitleDisplayMode = .never
     }
     
     private func setInputBar() {

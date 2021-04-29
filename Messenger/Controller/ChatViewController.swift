@@ -12,7 +12,7 @@ class ChatViewController: UIViewController {
     @IBOutlet var chatTable: UITableView!
     
     let labels: [String] = ["Tim-Cook", "Emma", "Mark", "Pon-ek", "Li", "Emma"]
-    var intervals: [Int] = [-1123, -123, -34234, -534124, -13323444, -534535343535]
+    var intervals: [Int] = [-123123, -1233, -24, -4564, -3455, -8767676723]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,7 +22,6 @@ class ChatViewController: UIViewController {
         intervals.sort(by: >)
         
         navigationItem.backButtonDisplayMode = .minimal
-        
     }
 }
 
@@ -32,9 +31,11 @@ extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
         let date = Date(timeIntervalSinceNow: TimeInterval(intervals[indexPath.row]))
         let formatter = DateFormatter()
         var dateText = ""
+        
         if Calendar.current.isDateInToday(date) {
             formatter.dateFormat = "HH:mm"
             dateText = "Today, "
@@ -48,7 +49,7 @@ extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
         
         cell.name?.text = labels[indexPath.row]
         
-        cell.detail?.text = "asdasdasd"
+        cell.detail?.text = "asdasdasdsad"
         cell.detail?.textColor = .secondaryLabel
         
         cell.date?.text = dateText

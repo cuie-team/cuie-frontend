@@ -22,3 +22,13 @@ struct Message: MessageType, Equatable {
         return lhs.messageId == rhs.messageId
     }
 }
+
+extension MessageKind {
+    var textValue: String {
+        switch self {
+        case .text(let text):
+            return text
+        default: return ""
+        }
+    }
+}

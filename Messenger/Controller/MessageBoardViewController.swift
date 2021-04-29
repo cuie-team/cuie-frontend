@@ -16,7 +16,7 @@ class MessageBoardViewController: MessagesViewController {
     
     var otherUser: Sender!
     
-    private var messages: [Message] = []
+    var messages: [Message] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()

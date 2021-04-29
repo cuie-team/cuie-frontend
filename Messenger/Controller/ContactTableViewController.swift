@@ -38,6 +38,7 @@ class ContactTableViewController: UITableViewController, UISearchResultsUpdating
         
         navigationItem.largeTitleDisplayMode = .always
         navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.navigationBar.sizeToFit()
     }
  
     
@@ -62,6 +63,10 @@ class ContactTableViewController: UITableViewController, UISearchResultsUpdating
         let contacts = searchController.isActive ? filteredContact[indexPath.row] : allContact[indexPath.row]
         showUserProfile(contacts)
         
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 80
     }
     
     //MARK: - setup pull down refersh action

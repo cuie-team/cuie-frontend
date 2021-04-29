@@ -17,6 +17,7 @@ class ChatViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        chatTable.tableFooterView = UIView()
         chatTable.delegate = self
         chatTable.dataSource = self
         intervals.sort(by: >)

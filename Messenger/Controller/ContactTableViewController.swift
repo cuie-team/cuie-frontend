@@ -22,11 +22,13 @@ class ContactTableViewController: UITableViewController, UISearchResultsUpdating
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        getContact()
         setupReload()
         tableView.tableFooterView = UIView()
-        tableView.reloadData()
         SetupSearchController()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        getContact()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -91,6 +93,7 @@ class ContactTableViewController: UITableViewController, UISearchResultsUpdating
                             guard let fetchedData = response.data else { return }
                             let data = try JSONDecoder().decode(UserContact.self, from: fetchedData)
                             self.allContact = data
+                            
                             self.tableView.reloadData()
                             successCompletion()
                         } catch {

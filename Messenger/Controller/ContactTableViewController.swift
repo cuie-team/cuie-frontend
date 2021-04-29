@@ -7,30 +7,26 @@
 
 import UIKit
 import Foundation
+import Alamofire
 
 class ContactTableViewController: UITableViewController, UISearchResultsUpdating {
 
     //Mark - Vars
     
-    private var allContact: [ContactInfo] = []
-    private var filteredContact: [ContactInfo] = []
+    private var allContact: UserContact = UserContact()
+    private var filteredContact: UserContact = UserContact()
     
     private let searchController = UISearchController(searchResultsController: nil)
     var pullControl: UIRefreshControl!
     
-    private let contacts: [ContactInfo] = [
-        ContactInfo(name: "Tee", surname: "lert", status: "4th yrs", userID: "6030293121", email: "tee101@gmail.com"),
-        ContactInfo(name: "Pun", surname: "thana", status: "4th yrs", userID: "6030024721", email: "Pun101@gmail.com"),
-        ContactInfo(name: "Aj", surname: "P", status: "Faculty member", userID: "603012341", email: "Aj101@gmail.com")
-    ]
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        getContact()
         setupReload()
         tableView.tableFooterView = UIView()
+        tableView.reloadData()
         SetupSearchController()
-
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -44,13 +40,13 @@ class ContactTableViewController: UITableViewController, UISearchResultsUpdating
     
     // MARK: - Table view data source
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return searchController.isActive ? filteredContact.count : allContact.count
+        return searchController.isActive ? filteredContact.student.count : allContact.student.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! ContactTableViewCell
 
-        let contact = searchController.isActive ? filteredContact[indexPath.row] : allContact[indexPath.row]
+        let contact = searchController.isActive ? filteredContact.student[indexPath.row] : allContact.student[indexPath.row]
         
         cell.configure(contact: contact)
         
@@ -60,7 +56,7 @@ class ContactTableViewController: UITableViewController, UISearchResultsUpdating
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-        let contacts = searchController.isActive ? filteredContact[indexPath.row] : allContact[indexPath.row]
+        let contacts = searchController.isActive ? filteredContact.student[indexPath.row] : allContact.student[indexPath.row]
         showUserProfile(contacts)
         
     }
@@ -71,11 +67,44 @@ class ContactTableViewController: UITableViewController, UISearchResultsUpdating
     
     //MARK: - setup pull down refersh action
     @objc func refresh(_ sender: AnyObject) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            self.allContact = self.contacts
-            self.tableView.reloadData()
-            self.pullControl.endRefreshing()
+        getContact {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                self.pullControl.endRefreshing()
+                //To be implemented
+            }
+        } failedCompletion: {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+                self.pullControl.endRefreshing()
+                print("Failed to load data")
+                //To be implemented
+            }
         }
+    }
+    
+    private func getContact(successCompletion: @escaping () -> Void = { }, failedCompletion: @escaping () -> Void = { }) {
+        AF.request(Shared.url + "/users/contacts/info", method: .get)
+            .response { (response) in
+                if let code = response.response?.statusCode {
+                    switch code {
+                    case 200:
+                        do {
+                            guard let fetchedData = response.data else { return }
+                            let data = try JSONDecoder().decode(UserContact.self, from: fetchedData)
+                            self.allContact = data
+                            self.tableView.reloadData()
+                            successCompletion()
+                        } catch {
+                            print("Cannot decode contact json")
+                        }
+                    default:
+                        failedCompletion()
+                    }
+                } else {
+                    print("Cannot get into server")
+                }
+                
+                debugPrint(response)
+            }
     }
     
     private func setupReload() {
@@ -97,7 +126,7 @@ class ContactTableViewController: UITableViewController, UISearchResultsUpdating
     }
     private func filteredContentForSearchText(searchText: String) {
         
-        filteredContact = allContact.filter({ (contacts) -> Bool in
+        filteredContact.student = allContact.student.filter({ (contacts) -> Bool in
             return contacts.name.lowercased().contains(searchText.lowercased())
         })
         

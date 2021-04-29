@@ -7,15 +7,15 @@
 
 import Foundation
 
-struct UserContact{
-    var list: [ContactInfo] = []
+struct UserContact: Codable {
+    var professor: [ContactInfo] = []
+    var staff: [ContactInfo] = []
+    var student: [ContactInfo] = []
 }
 
-struct ContactInfo {
-    var name: String
-    var surname: String
-    var status: String
-    var userID: String
-    var email: String
-
+struct ContactInfo: Codable {
+    let name: String
+    let surname: String
+    let status: String
+    let userID: String
 }

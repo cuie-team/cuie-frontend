@@ -159,7 +159,7 @@ extension LoginViewController {
             "password": PasswordTextField.text,
             "status": StatusTextField.text
         ]
-        let request = AF.request("http://35.213.134.44:3000/users/signup", method: .post, parameters: registerParams)
+        let request = AF.request(Shared.url + "/users/signup", method: .post, parameters: registerParams)
         
         request.responseJSON { (data) in
             if let code = data.response?.statusCode {
@@ -174,7 +174,7 @@ extension LoginViewController {
     private func logIn() {
         let parameter = User(userID: StudentNumberTextField.text!, password: PasswordTextField.text!)
 
-        let request = AF.request("http://35.213.134.44:3000/users/signin", method: .post, parameters: parameter, encoder: JSONParameterEncoder.default)
+        let request = AF.request(Shared.url + "/users/signin", method: .post, parameters: parameter, encoder: JSONParameterEncoder.default)
 
         request.responseJSON { (response) in
             if let code = response.response?.statusCode {
@@ -189,7 +189,7 @@ extension LoginViewController {
                     }
                 }
             } else {
-                print("asdasd")
+                print("Failed to connect with server")
             }
 
             debugPrint(response)

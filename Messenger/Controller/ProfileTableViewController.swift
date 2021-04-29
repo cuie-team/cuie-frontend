@@ -23,7 +23,7 @@ class ProfileTableViewController: UITableViewController {
 
         navigationItem.largeTitleDisplayMode = .never
         tableView.tableFooterView = UIView()
-        
+
         setupUI()
     }
     
@@ -48,11 +48,11 @@ class ProfileTableViewController: UITableViewController {
     }
     
     //Mark- set up UI
-    private func setupUI(){
+    private func setupUI() {
         if contact != nil {
             self.title = contact!.name
+            UsernameLabel.text = contact!.name
             StatusLabel.text = contact!.status
-
         }
     }
     

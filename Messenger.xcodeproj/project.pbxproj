@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2204B496263B0CB5003CDE37 /* Shared.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204B495263B0CB5003CDE37 /* Shared.swift */; };
+		2204B49C26412DFA003CDE37 /* ChatRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204B49B26412DFA003CDE37 /* ChatRoom.swift */; };
 		2248A075260A0AC90083AE7F /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2248A074260A0AC90083AE7F /* TabBarController.swift */; };
 		2248A078260A10750083AE7F /* TabBarStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2248A077260A10750083AE7F /* TabBarStoryboard.storyboard */; };
 		2248A08B260A57520083AE7F /* SpinnerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2248A08A260A57520083AE7F /* SpinnerViewController.swift */; };
@@ -36,6 +37,7 @@
 
 /* Begin PBXFileReference section */
 		2204B495263B0CB5003CDE37 /* Shared.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shared.swift; sourceTree = "<group>"; };
+		2204B49B26412DFA003CDE37 /* ChatRoom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoom.swift; sourceTree = "<group>"; };
 		2248A074260A0AC90083AE7F /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		2248A077260A10750083AE7F /* TabBarStoryboard.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = TabBarStoryboard.storyboard; sourceTree = "<group>"; };
 		2248A08A260A57520083AE7F /* SpinnerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpinnerViewController.swift; sourceTree = "<group>"; };
@@ -131,6 +133,7 @@
 				22F0E3622634315100851E47 /* Message.swift */,
 				22F0E36526346CE000851E47 /* Media.swift */,
 				F260C9C626343174006E7E81 /* Contact.swift */,
+				2204B49B26412DFA003CDE37 /* ChatRoom.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -301,6 +304,7 @@
 				22F0E36026342FE200851E47 /* Sender.swift in Sources */,
 				F2E3239A25C14DB60075EB2A /* AppDelegate.swift in Sources */,
 				2248A075260A0AC90083AE7F /* TabBarController.swift in Sources */,
+				2204B49C26412DFA003CDE37 /* ChatRoom.swift in Sources */,
 				F2887A1125E3989B00B53DD6 /* User.swift in Sources */,
 				22F0E36D263497AD00851E47 /* UIImageCustom.swift in Sources */,
 				2248A08B260A57520083AE7F /* SpinnerViewController.swift in Sources */,

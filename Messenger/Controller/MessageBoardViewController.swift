@@ -8,9 +8,10 @@
 import UIKit
 import MessageKit
 import InputBarAccessoryView
-import Alamofire
 
 class MessageBoardViewController: MessagesViewController {
+    
+    let chatroom: ChatRoom = ChatRoom()
     
     var currentUser: Sender!
     
@@ -27,33 +28,47 @@ class MessageBoardViewController: MessagesViewController {
         setInputBar()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        setChatRoom()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        chatroom.stopChatSession()
+    }
+    
+    private func setChatRoom() {
+        chatroom.setupNetworkCommunication()
+        chatroom.joinChat(userName: currentUser.displayName, otherName: otherUser.displayName)
+        chatroom.delegate = self
+    }
+    
     private func setUser() {
         self.currentUser = Sender(senderId: "self", displayName: "Tim-Cook")
-        self.otherUser = Sender(senderId: "other", displayName: title ?? "???")
+        self.otherUser = Sender(senderId: "other", displayName: title ?? "Unknown")
     }
     
     private func getMessage() {
         messages.append(Message(
                             sender: currentUser,
-                            messageId: "1",
+                            messageId: UUID().uuidString,
                             sentDate: Date().addingTimeInterval(-96400),
                             kind: .text("Hello!!")))
         
         messages.append(Message(
                             sender: otherUser,
-                            messageId: "2",
+                            messageId: UUID().uuidString,
                             sentDate: Date().addingTimeInterval(-86200),
                             kind: .text("How's it going")))
         
         messages.append(Message(
                             sender: currentUser,
-                            messageId: "3",
+                            messageId: UUID().uuidString,
                             sentDate: Date().addingTimeInterval(-6400),
                             kind: .text("Covid19 spreading")))
         
         messages.append(Message(
                             sender: currentUser,
-                            messageId: "4",
+                            messageId: UUID().uuidString,
                             sentDate: Date().addingTimeInterval(-6200),
                             kind: .text("Sad")))
     }
@@ -304,9 +319,10 @@ extension MessageBoardViewController: MessagesDataSource, MessagesLayoutDelegate
     
     //MARK: - setup for InputBarAccessoryViewDelegate
     func inputBar(_ inputBar: InputBarAccessoryView, didPressSendButtonWith text: String) {
-        let message = Message(sender: currentUser, messageId: String(messages.count + 1), sentDate: Date(), kind: .photo(Media(url: nil, image: UIImage(named: "Tim-Cook"), placeholderImage: UIImage(named: "Tim-Cook")!, size: CGSize(width: 250, height: 200))))
+//        let message = Message(sender: currentUser, messageId: String(messages.count + 1), sentDate: Date(), kind: .photo(Media(url: nil, image: UIImage(named: "Tim-Cook"), placeholderImage: UIImage(named: "Tim-Cook")!, size: CGSize(width: 250, height: 200))))
         
-        insertNewMessage(message)
+        //insertNewMessage(message)
+        chatroom.send(message: text)
 
         inputBar.inputTextView.text = ""
     }
@@ -331,5 +347,11 @@ extension MessageBoardViewController: MessageCellDelegate {
         default:
             break
         }
+    }
+}
+
+extension MessageBoardViewController: ChatRoomDelegate {
+    func receive(message: Message) {
+        insertNewMessage(message)
     }
 }

@@ -11,7 +11,7 @@ class ChatViewController: UIViewController {
 
     @IBOutlet var chatTable: UITableView!
     
-    let labels: [String] = ["Tim-Cook", "Emma", "Mark", "Pon-ek", "Li", "Emma"]
+    let labels: [String] = ["Pon-ek", "Emma", "Mark", "Greg", "Li", "Emma"]
     var intervals: [Int] = [-123123, -1233, -24, -4564, -3455, -8767676723]
     
     override func viewDidLoad() {

@@ -34,7 +34,7 @@ class ChatViewController: UIViewController {
         getChatRoom()
         
         SocketIOManager.sharedInstance.establishConnection()
-        SocketIOManager.sharedInstance.connectToServerWithId(id: id)
+//        SocketIOManager.sharedInstance.connectToServerWithId(id: id)
         
         SocketIOManager.sharedInstance.testToServer()
     }

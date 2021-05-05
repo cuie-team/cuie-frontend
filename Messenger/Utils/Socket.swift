@@ -12,15 +12,15 @@ import SwiftyJSON
 class SocketIOManager: NSObject {
     static let sharedInstance = SocketIOManager()
     
+    private let manager = SocketManager(socketURL: URL(string: Shared.url)!,
+                                config: [.log(true), .compress])
+    
+    private var socket: SocketIOClient!
+    
     override private init() {
         super.init()
-    }
-    
-    private var socket: SocketIOClient {
-        let manager = SocketManager(socketURL: URL(string: Shared.url)!,
-                                    config: [.log(true), .compress])
         
-        return manager.defaultSocket
+        socket = manager.defaultSocket
     }
     
     func testToServer() {

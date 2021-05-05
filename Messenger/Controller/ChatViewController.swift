@@ -35,6 +35,8 @@ class ChatViewController: UIViewController {
         
         SocketIOManager.sharedInstance.establishConnection()
         SocketIOManager.sharedInstance.connectToServerWithId(id: id)
+        
+        SocketIOManager.sharedInstance.testToServer()
     }
     
     //MARK: - setup pull down refersh action
@@ -93,25 +95,26 @@ extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        let date = Date().textISOToDate(text: chatRooms[indexPath.row].lastMsgTime)
-        let formatter = DateFormatter()
+        let cell = tableView.dequeueReusableCell(withIdentifier: "chat_cell", for: indexPath) as! ChatViewCellController
         var dateText = ""
         
-        if Calendar.current.isDateInToday(date) {
-            formatter.dateFormat = "HH:mm"
-            dateText = "Today, "
-        } else {
-            formatter.dateFormat = "MM/dd/yyyy"
+        if let msgTime = chatRooms[indexPath.row].lastMsgTime {
+            let date = Date().textISOToDate(text: msgTime)
+            let formatter = DateFormatter()
+            
+            if Calendar.current.isDateInToday(date) {
+                formatter.dateFormat = "HH:mm"
+                dateText = "Today, "
+            } else {
+                formatter.dateFormat = "MM/dd/yyyy"
+            }
+            
+            dateText += "\(formatter.string(from: date))"
         }
-        
-        dateText += "\(formatter.string(from: date))"
-        
-        let cell = tableView.dequeueReusableCell(withIdentifier: "chat_cell", for: indexPath) as! ChatViewCellController
         
         cell.name?.text = chatRooms[indexPath.row].name
         
-        cell.detail?.text = chatRooms[indexPath.row].lastMsg
+        cell.detail?.text = chatRooms[indexPath.row].lastMsgContext
         cell.detail?.textColor = .secondaryLabel
         
         cell.date?.text = dateText

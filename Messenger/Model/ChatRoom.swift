@@ -10,6 +10,10 @@ import Foundation
 struct ChatRoom: Codable {
     let roomID: String
     let name: String
-    let lastMsg: String
-    let lastMsgTime: String
+    let roomType: String
+    let lastMsg: String?
+    let lastMsgTime: String?
+    let lastMsgContext: String?
+    let lastMsgType: String?
+    let members: [String]
 }

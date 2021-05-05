@@ -24,16 +24,12 @@ class SocketIOManager: NSObject {
     }
     
     func testToServer() {
-        let test = ["test": "Pon-ek_cpcu"]
-        socket.emit("???", test)
-    }
-    
-    func testGetFromServer() {
-        socket.on("???") { (dataArray, ack) in
+        socket.emit("test:to_server", "hello ponek")
+        socket.on("test:from_server") { (dataArray, ack) in
             print(dataArray)
         }
     }
-    
+
     func connectToServerWithId(id: [String: Any]) {
         socket.emit("session_id", id)
     }

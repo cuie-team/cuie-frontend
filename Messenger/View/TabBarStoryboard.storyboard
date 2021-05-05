@@ -383,14 +383,14 @@
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nUE-rV-nlb">
-                                            <rect key="frame" x="80" y="16" width="45" height="20.5"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <rect key="frame" x="80" y="16" width="53" height="24"/>
+                                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="20"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Description" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vG7-jD-R18">
-                                            <rect key="frame" x="80" y="42" width="65" height="15"/>
-                                            <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
+                                            <rect key="frame" x="80" y="43" width="77" height="20.5"/>
+                                            <fontDescription key="fontDescription" name="Avenir-Light" family="Avenir" pointSize="15"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
@@ -402,7 +402,7 @@
                                         </label>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="vG7-jD-R18" firstAttribute="top" secondItem="nUE-rV-nlb" secondAttribute="bottom" constant="5.5" id="1Z7-cN-ime"/>
+                                        <constraint firstItem="vG7-jD-R18" firstAttribute="top" secondItem="nUE-rV-nlb" secondAttribute="bottom" constant="3" id="1Z7-cN-ime"/>
                                         <constraint firstItem="nUE-rV-nlb" firstAttribute="top" secondItem="MBE-0y-Lnk" secondAttribute="topMargin" constant="5" id="2Ql-sx-Z4k"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="6e3-fi-AxC" secondAttribute="trailing" constant="10" id="BV3-Fz-tDR"/>
                                         <constraint firstItem="nUE-rV-nlb" firstAttribute="leading" secondItem="9eb-E3-Tvc" secondAttribute="trailing" constant="10" id="K6X-Jd-wkM"/>

@@ -19,4 +19,9 @@ struct ContactInfo: Codable {
     let name: String
     let surname: String
     let status: String
+    
+    func search(by text: String) -> Bool {
+        if text == "" { return true }
+        return self.userID.contains(text) || self.name.lowercased().contains(text) || self.surname.lowercased().contains(text) || self.status.lowercased().contains(text)
+    }
 }

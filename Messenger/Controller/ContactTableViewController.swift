@@ -9,18 +9,19 @@ import UIKit
 import Foundation
 import Alamofire
 
-class ContactTableViewController: UITableViewController, UISearchResultsUpdating {
+class ContactTableViewController: UITableViewController, UISearchResultsUpdating, UISearchBarDelegate {
 
     //Mark - Vars
     
     private var allContact: UserContact = UserContact()
-    private var filteredContact: UserContact = UserContact()
+    private var filteredContact: [ContactInfo] = []
     
     private let searchController = UISearchController(searchResultsController: nil)
     var pullControl: UIRefreshControl!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         
         setupReload()
         tableView.tableFooterView = UIView()
@@ -42,13 +43,13 @@ class ContactTableViewController: UITableViewController, UISearchResultsUpdating
     
     // MARK: - Table view data source
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return searchController.isActive ? filteredContact.all.count : allContact.all.count
+        return searchController.isActive ? filteredContact.count : allContact.all.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! ContactTableViewCell
 
-        let contact = searchController.isActive ? filteredContact.all[indexPath.row] : allContact.all[indexPath.row]
+        let contact = searchController.isActive ? filteredContact[indexPath.row] : allContact.all[indexPath.row]
         
         cell.configure(contact: contact)
         
@@ -58,9 +59,8 @@ class ContactTableViewController: UITableViewController, UISearchResultsUpdating
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-        let contacts = searchController.isActive ? filteredContact.all[indexPath.row] : allContact.all[indexPath.row]
+        let contacts = searchController.isActive ? filteredContact[indexPath.row] : allContact.all[indexPath.row]
         showUserProfile(contacts)
-        
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -118,20 +118,39 @@ class ContactTableViewController: UITableViewController, UISearchResultsUpdating
     
     //Mark - set up searching contact
     private func SetupSearchController() {
-        navigationItem.searchController = searchController
-        navigationItem.hidesSearchBarWhenScrolling = true
-        
+        searchController.loadViewIfNeeded()
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchBar.placeholder = "Search contact"
         searchController.searchResultsUpdater = self
+        searchController.searchBar.returnKeyType = UIReturnKeyType.done
+        searchController.searchBar.scopeButtonTitles = ["All", "Professors", "Students", "Staffs"]
+        searchController.searchBar.delegate = self
+        
         definesPresentationContext = true
         
+        navigationItem.searchController = searchController
+        navigationItem.hidesSearchBarWhenScrolling = true
     }
-    private func filteredContentForSearchText(searchText: String) {
-        
-        filteredContact.all = allContact.all.filter({ (contacts) -> Bool in
-            return contacts.name.lowercased().contains(searchText.lowercased())
-        })
+    
+    private func filteredContentForSearchText(searchText: String, scopeButton: String = "All") {
+        if scopeButton == "Professors" {
+            print(allContact.professors)
+            filteredContact = allContact.professors.filter({ (contacts) -> Bool in
+                return contacts.search(by: searchText)
+            })
+        } else if scopeButton == "Students" {
+            filteredContact = allContact.students.filter({ (contacts) -> Bool in
+                return contacts.search(by: searchText)
+            })
+        } else if scopeButton == "Staffs" {
+            filteredContact = allContact.staffs.filter({ (contacts) -> Bool in
+                return contacts.search(by: searchText)
+            })
+        } else {
+            filteredContact = allContact.all.filter({ (contacts) -> Bool in
+                return contacts.search(by: searchText)
+            })
+        }
         
         tableView.reloadData()
     }
@@ -151,6 +170,10 @@ class ContactTableViewController: UITableViewController, UISearchResultsUpdating
 extension ContactTableViewController {
     
     func updateSearchResults(for searchController: UISearchController) {
-        filteredContentForSearchText(searchText: searchController.searchBar.text!)
+        let searchBar = searchController.searchBar
+        let scopeButton = searchBar.scopeButtonTitles![searchBar.selectedScopeButtonIndex]
+        let searchText = searchBar.text!
+
+        filteredContentForSearchText(searchText: searchText.lowercased(), scopeButton: scopeButton)
     }
 }

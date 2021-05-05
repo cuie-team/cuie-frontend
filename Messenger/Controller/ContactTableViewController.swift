@@ -42,13 +42,13 @@ class ContactTableViewController: UITableViewController, UISearchResultsUpdating
     
     // MARK: - Table view data source
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return searchController.isActive ? filteredContact.student.count : allContact.student.count
+        return searchController.isActive ? filteredContact.all.count : allContact.all.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! ContactTableViewCell
 
-        let contact = searchController.isActive ? filteredContact.student[indexPath.row] : allContact.student[indexPath.row]
+        let contact = searchController.isActive ? filteredContact.all[indexPath.row] : allContact.all[indexPath.row]
         
         cell.configure(contact: contact)
         
@@ -58,7 +58,7 @@ class ContactTableViewController: UITableViewController, UISearchResultsUpdating
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-        let contacts = searchController.isActive ? filteredContact.student[indexPath.row] : allContact.student[indexPath.row]
+        let contacts = searchController.isActive ? filteredContact.all[indexPath.row] : allContact.all[indexPath.row]
         showUserProfile(contacts)
         
     }
@@ -84,7 +84,7 @@ class ContactTableViewController: UITableViewController, UISearchResultsUpdating
     }
     
     private func getContact(successCompletion: @escaping () -> Void = { }, failedCompletion: @escaping () -> Void = { }) {
-        AF.request(Shared.url + "/users/contacts/info", method: .get)
+        AF.request(Shared.url + "/user/contacts", method: .get)
             .response { (response) in
                 if let code = response.response?.statusCode {
                     switch code {
@@ -129,7 +129,7 @@ class ContactTableViewController: UITableViewController, UISearchResultsUpdating
     }
     private func filteredContentForSearchText(searchText: String) {
         
-        filteredContact.student = allContact.student.filter({ (contacts) -> Bool in
+        filteredContact.all = allContact.all.filter({ (contacts) -> Bool in
             return contacts.name.lowercased().contains(searchText.lowercased())
         })
         

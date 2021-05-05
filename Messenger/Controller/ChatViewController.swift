@@ -6,34 +6,95 @@
 //
 
 import UIKit
+import Alamofire
 
 class ChatViewController: UIViewController {
 
     @IBOutlet var chatTable: UITableView!
     
-    let labels: [String] = ["Pon-ek", "Emma", "Mark", "Greg", "Li", "Emma"]
-    var intervals: [Int] = [-123123, -1233, -24, -4564, -3455, -8767676723]
+    var pullControl: UIRefreshControl!
+    
+    let id: [String: Any] = ["sessionID": "12345", "chatroomID": "54321"]
+    
+    var chatRooms: [ChatRoom] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        extendedLayoutIncludesOpaqueBars = true
+        setupReload()
         chatTable.tableFooterView = UIView()
         chatTable.delegate = self
         chatTable.dataSource = self
-        intervals.sort(by: >)
         
         navigationItem.backButtonDisplayMode = .minimal
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        getChatRoom()
+        
+        SocketIOManager.sharedInstance.establishConnection()
+        SocketIOManager.sharedInstance.connectToServerWithId(id: id)
+    }
+    
+    //MARK: - setup pull down refersh action
+    @objc func refresh(_ sender: AnyObject) {
+        getChatRoom {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                self.pullControl.endRefreshing()
+                //To be implemented
+            }
+        } failedCompletion: {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                self.pullControl.endRefreshing()
+                print("Failed to load data")
+                //To be implemented
+            }
+        }
+    }
+    
+    private func setupReload() {
+        pullControl = UIRefreshControl()
+        pullControl.addTarget(self, action: #selector(refresh(_:)), for: .valueChanged)
+        self.chatTable.refreshControl = pullControl
+    }
+    
+    private func getChatRoom(successCompletion: @escaping () -> Void = { }, failedCompletion: @escaping () -> Void = { }) {
+        AF.request(Shared.url + "/user/rooms", method: .get)
+            .response { (response) in
+                if let code = response.response?.statusCode {
+                    switch code {
+                    case 200:
+                        do {
+                            guard let fetchedData = response.data else { return }
+                            let data = try JSONDecoder().decode([ChatRoom].self, from: fetchedData)
+                            self.chatRooms = data
+                            
+                            self.chatTable.reloadData()
+                            successCompletion()
+                        } catch {
+                            print("Cannot decode contact json")
+                        }
+                    default:
+                        failedCompletion()
+                    }
+                } else {
+                    print("Cannot get into server")
+                }
+                
+                debugPrint(response)
+            }
     }
 }
 
 extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return labels.count
+        return chatRooms.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let date = Date(timeIntervalSinceNow: TimeInterval(intervals[indexPath.row]))
+        let date = Date().textISOToDate(text: chatRooms[indexPath.row].lastMsgTime)
         let formatter = DateFormatter()
         var dateText = ""
         
@@ -48,15 +109,15 @@ extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "chat_cell", for: indexPath) as! ChatViewCellController
         
-        cell.name?.text = labels[indexPath.row]
+        cell.name?.text = chatRooms[indexPath.row].name
         
-        cell.detail?.text = "asdasdasdsad"
+        cell.detail?.text = chatRooms[indexPath.row].lastMsg
         cell.detail?.textColor = .secondaryLabel
         
         cell.date?.text = dateText
         cell.date?.textColor = .secondaryLabel
         
-        if let image = UIImage(named: labels[indexPath.row]) {
+        if let image = UIImage(named: chatRooms[indexPath.row].name) {
             cell.avatar?.image = image.circleMasked
         } else {
             cell.avatar?.image = UIImage(named: "avatar")
@@ -75,7 +136,7 @@ extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
         tableView.deselectRow(at: indexPath, animated: true)
         
         let boardVC = MessageBoardViewController()
-        boardVC.title = labels[indexPath.row]
+        boardVC.title = chatRooms[indexPath.row].name
         
         navigationController?.pushViewController(boardVC, animated: true)
     }

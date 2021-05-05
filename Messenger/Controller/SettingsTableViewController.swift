@@ -79,11 +79,12 @@ class SettingsTableViewController: UITableViewController {
     }
     
     private func logoutAction() {
-        AF.request(Shared.url + "/users/signout", method: .post)
+        AF.request(Shared.url + "/signout", method: .post)
             .responseJSON { (response) in
                 if let code = response.response?.statusCode {
                     switch code {
                     case 200:
+                        SocketIOManager.sharedInstance.closeConnection()
                         self.performSegue(withIdentifier: "unwindLogin", sender: self)
                     default:
                         self.presentAlert()

@@ -11,8 +11,6 @@ import InputBarAccessoryView
 
 class MessageBoardViewController: MessagesViewController {
     
-    let chatroom: ChatRoom = ChatRoom()
-    
     var currentUser: Sender!
     
     var otherUser: Sender!
@@ -26,20 +24,6 @@ class MessageBoardViewController: MessagesViewController {
         getMessage()
         setCollectionView()
         setInputBar()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        setChatRoom()
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        chatroom.stopChatSession()
-    }
-    
-    private func setChatRoom() {
-        chatroom.setupNetworkCommunication()
-        chatroom.joinChat(userName: currentUser.displayName, otherName: otherUser.displayName)
-        chatroom.delegate = self
     }
     
     private func setUser() {
@@ -319,10 +303,9 @@ extension MessageBoardViewController: MessagesDataSource, MessagesLayoutDelegate
     
     //MARK: - setup for InputBarAccessoryViewDelegate
     func inputBar(_ inputBar: InputBarAccessoryView, didPressSendButtonWith text: String) {
-//        let message = Message(sender: currentUser, messageId: String(messages.count + 1), sentDate: Date(), kind: .photo(Media(url: nil, image: UIImage(named: "Tim-Cook"), placeholderImage: UIImage(named: "Tim-Cook")!, size: CGSize(width: 250, height: 200))))
+        let message = Message(sender: currentUser, messageId: String(messages.count + 1), sentDate: Date(), kind: .photo(Media(url: nil, image: UIImage(named: "Tim-Cook"), placeholderImage: UIImage(named: "Tim-Cook")!, size: CGSize(width: 250, height: 200))))
         
-        //insertNewMessage(message)
-        chatroom.send(message: text)
+        insertNewMessage(message)
 
         inputBar.inputTextView.text = ""
     }
@@ -347,11 +330,5 @@ extension MessageBoardViewController: MessageCellDelegate {
         default:
             break
         }
-    }
-}
-
-extension MessageBoardViewController: ChatRoomDelegate {
-    func receive(message: Message) {
-        insertNewMessage(message)
     }
 }

@@ -8,14 +8,15 @@
 import Foundation
 
 struct UserContact: Codable {
-    var professor: [ContactInfo] = []
-    var staff: [ContactInfo] = []
-    var student: [ContactInfo] = []
+    var all: [ContactInfo] = []
+    var professors: [ContactInfo] = []
+    var students: [ContactInfo] = []
+    var staffs: [ContactInfo] = []
 }
 
 struct ContactInfo: Codable {
+    let userID: String
     let name: String
     let surname: String
     let status: String
-    let userID: String
 }

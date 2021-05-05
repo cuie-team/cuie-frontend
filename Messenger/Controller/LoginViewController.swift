@@ -159,7 +159,7 @@ extension LoginViewController {
             "password": PasswordTextField.text,
             "status": StatusTextField.text
         ]
-        let request = AF.request(Shared.url + "/users/signup", method: .post, parameters: registerParams)
+        let request = AF.request(Shared.url + "/signup", method: .post, parameters: registerParams)
         
         request.responseJSON { (data) in
             if let code = data.response?.statusCode {
@@ -174,9 +174,9 @@ extension LoginViewController {
     private func logIn() {
 //        let parameter = User(userID: StudentNumberTextField.text!, password: PasswordTextField.text!)
         
-        let parameter = User(userID: "6231373621", password: "passwordKongPonEk")
+        let parameter = User(userID: "6231341521", password: "passwordKongPonEk")
 
-        let request = AF.request(Shared.url + "/users/signin", method: .post, parameters: parameter, encoder: JSONParameterEncoder.default)
+        let request = AF.request(Shared.url + "/signin", method: .post, parameters: parameter, encoder: JSONParameterEncoder.default)
 
         request.responseJSON { (response) in
             if let code = response.response?.statusCode {

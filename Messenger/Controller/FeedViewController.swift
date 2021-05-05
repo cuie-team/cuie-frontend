@@ -27,6 +27,7 @@ class FeedViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        tableView.tableFooterView = UIView()
         tableView.delegate = self
         tableView.dataSource = self
 

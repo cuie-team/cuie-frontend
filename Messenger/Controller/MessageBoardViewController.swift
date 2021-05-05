@@ -8,7 +8,6 @@
 import UIKit
 import MessageKit
 import InputBarAccessoryView
-import Alamofire
 
 class MessageBoardViewController: MessagesViewController {
     
@@ -16,7 +15,7 @@ class MessageBoardViewController: MessagesViewController {
     
     var otherUser: Sender!
     
-    private var messages: [Message] = []
+    var messages: [Message] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,31 +28,31 @@ class MessageBoardViewController: MessagesViewController {
     
     private func setUser() {
         self.currentUser = Sender(senderId: "self", displayName: "Tim-Cook")
-        self.otherUser = Sender(senderId: "other", displayName: title ?? "???")
+        self.otherUser = Sender(senderId: "other", displayName: title ?? "Unknown")
     }
     
     private func getMessage() {
         messages.append(Message(
                             sender: currentUser,
-                            messageId: "1",
+                            messageId: UUID().uuidString,
                             sentDate: Date().addingTimeInterval(-96400),
                             kind: .text("Hello!!")))
         
         messages.append(Message(
                             sender: otherUser,
-                            messageId: "2",
+                            messageId: UUID().uuidString,
                             sentDate: Date().addingTimeInterval(-86200),
                             kind: .text("How's it going")))
         
         messages.append(Message(
                             sender: currentUser,
-                            messageId: "3",
+                            messageId: UUID().uuidString,
                             sentDate: Date().addingTimeInterval(-6400),
                             kind: .text("Covid19 spreading")))
         
         messages.append(Message(
                             sender: currentUser,
-                            messageId: "4",
+                            messageId: UUID().uuidString,
                             sentDate: Date().addingTimeInterval(-6200),
                             kind: .text("Sad")))
     }
@@ -63,6 +62,7 @@ class MessageBoardViewController: MessagesViewController {
         messagesCollectionView.messagesLayoutDelegate = self
         messagesCollectionView.messagesDisplayDelegate = self
         messagesCollectionView.messageCellDelegate = self
+        navigationItem.largeTitleDisplayMode = .never
     }
     
     private func setInputBar() {

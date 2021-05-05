@@ -70,20 +70,8 @@ class LoginViewController: UIViewController {
         updateUIFor(login: sender.titleLabel?.text == "Log In.")
     }
     
-    @IBAction func unwindLogin(segue: UIStoryboardSegue) { } 
-    
-    @objc func textFieldDidChange(_ textField: UITextField) {
-        
-    }
-    
-    //Mark Set up
-//    private func setupTextFieldDelegates(){
-//        StudentNumberTextField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
-//
-//        PasswordTextField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
-//
-//    }
-    
+    @IBAction func unwindLogin(segue: UIStoryboardSegue) { }
+
     private func setupBackgroundTap() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(backgroundTap))
         view.addGestureRecognizer(tapGesture)
@@ -171,9 +159,7 @@ extension LoginViewController {
             "password": PasswordTextField.text,
             "status": StatusTextField.text
         ]
-        let request = AF.request("http://35.213.134.44:3000/users/signup", method: .post, parameters: registerParams)
-        
-        
+        let request = AF.request(Shared.url + "/signup", method: .post, parameters: registerParams)
         
         request.responseJSON { (data) in
             if let code = data.response?.statusCode {
@@ -186,31 +172,29 @@ extension LoginViewController {
     }
     
     private func logIn() {
-//        let parameter = User(userID: "6231373621", password: "cpcudev123")
-//
-//        let request = AF.request("http://35.213.134.44:3000/users/signin", method: .post, parameters: parameter, encoder: JSONParameterEncoder.default)
-//
-//        print(StudentNumberTextField.text!, PasswordTextField.text!)
-//
-//        request.responseJSON { (response) in
-//            if let code = response.response?.statusCode {
-//                switch code {
-//                case 200:
-//                    self.createSpinnerView { }
-//                    self.changeToHome()
-//                default:
-//                    self.createSpinnerView {
-//                        self.presentAlert()
-//                    }
-//                }
-//            } else {
-//                print("asdasd")
-//            }
-//
-//            debugPrint(response)
-//        }
-        self.createSpinnerView {
-            self.changeToHome()
+//        let parameter = User(userID: StudentNumberTextField.text!, password: PasswordTextField.text!)
+        
+        let parameter = User(userID: "6231341521", password: "passwordKongPonEk")
+
+        let request = AF.request(Shared.url + "/signin", method: .post, parameters: parameter, encoder: JSONParameterEncoder.default)
+
+        request.responseJSON { (response) in
+            if let code = response.response?.statusCode {
+                switch code {
+                case 200:
+                    self.createSpinnerView {
+                        self.changeToHome()
+                    }
+                default:
+                    self.createSpinnerView {
+                        self.presentAlert()
+                    }
+                }
+            } else {
+                print("Failed to connect with server")
+            }
+
+            debugPrint(response)
         }
        
     }

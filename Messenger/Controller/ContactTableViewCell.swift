@@ -27,12 +27,13 @@ class ContactTableViewCell: UITableViewCell {
     func configure(contact: ContactInfo) {
         UsernameLabel.text = contact.name+" "+contact.surname
         StatsLabel.text = contact.status
-        setAvatar(AvatarLink: "")
+        setAvatar(avatarLink: "")
     }
-    private func setAvatar(AvatarLink: String) {
-        if AvatarLink != "" {
+    
+    private func setAvatar(avatarLink: String) {
+        if avatarLink != "" {
             
-        }else{
+        } else {
             self.AvatarImageView.image = UIImage(named: "avatar")
         }
     }

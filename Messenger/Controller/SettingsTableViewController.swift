@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Alamofire
 
 class SettingsTableViewController: UITableViewController {
 
@@ -78,7 +79,22 @@ class SettingsTableViewController: UITableViewController {
     }
     
     private func logoutAction() {
-        performSegue(withIdentifier: "unwindLogin", sender: self)
+        AF.request(Shared.url + "/signout", method: .post)
+            .responseJSON { (response) in
+                if let code = response.response?.statusCode {
+                    switch code {
+                    case 200:
+                        SocketIOManager.sharedInstance.closeConnection()
+                        self.performSegue(withIdentifier: "unwindLogin", sender: self)
+                    default:
+                        self.presentAlert()
+                    }
+                } else {
+                    print("Failed to connect with server")
+                }
+                
+                debugPrint(response)
+            }
     }
     
     //Prepare for returning to login view
@@ -98,5 +114,11 @@ class SettingsTableViewController: UITableViewController {
         avatarImage.image = UIImage(named: "avatar")
         
         versionLabel.text = "Version 1.0.0"
+    }
+    
+    private func presentAlert() {
+        let alert = UIAlertController(title: "Logout Failed", message: "Please try again later", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Close", style: .cancel, handler: nil))
+        self.present(alert, animated: true, completion: nil)
     }
 }

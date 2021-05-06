@@ -15,13 +15,13 @@ class ContactTableViewController: UITableViewController, UISearchResultsUpdating
     
     private var allContact: UserContact = UserContact()
     private var filteredContact: [ContactInfo] = []
+    private var selectedProfile: Profile = Profile()
     
     private let searchController = UISearchController(searchResultsController: nil)
     var pullControl: UIRefreshControl!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         
         setupReload()
         tableView.tableFooterView = UIView()
@@ -110,6 +110,34 @@ class ContactTableViewController: UITableViewController, UISearchResultsUpdating
             }
     }
     
+    private func getProfile(id: String) {
+        
+        AF.request(Shared.url + "/user/contact?userid=" + id, method: .get)
+            .response { (response) in
+                if let code = response.response?.statusCode {
+                    switch code {
+                    case 200:
+                        do {
+                            guard let fetchedData = response.data else { return }
+                            let data = try JSONDecoder().decode(Profile.self, from: fetchedData)
+                            
+                            self.selectedProfile = data
+                            
+                        } catch {
+                            print("Cannot decode contact json")
+                        }
+                    default:
+                        print("Failed to get profile")
+                    }
+                } else {
+                    print("Cannot get into server")
+                }
+                
+                debugPrint(response)
+            }
+        
+    }
+    
     private func setupReload() {
         pullControl = UIRefreshControl()
         pullControl.addTarget(self, action: #selector(refresh(_:)), for: .valueChanged)
@@ -161,7 +189,9 @@ class ContactTableViewController: UITableViewController, UISearchResultsUpdating
         let board = UIStoryboard(name: "TabBarStoryboard", bundle: nil)
         guard let profileView = board.instantiateViewController(identifier: "ProfileView") as? ProfileTableViewController else { return }
         
-        profileView.contact = contact
+        profileView.title = contact.name        
+        profileView.id = contact.userID
+        
         self.navigationController?.pushViewController(profileView, animated: true)
     }
     

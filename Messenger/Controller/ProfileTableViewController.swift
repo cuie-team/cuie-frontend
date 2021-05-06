@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import Alamofire
+
 
 class ProfileTableViewController: UITableViewController {
 
@@ -17,8 +19,8 @@ class ProfileTableViewController: UITableViewController {
     @IBOutlet weak var userIDLabel: UILabel!
     @IBOutlet weak var BioLabel: UILabel!
     
-    //Mark - Vars
-    var contact: ContactInfo?
+    var id: String = ""
+    var profile = Profile()
     
     //Mark - View life cycle
     override func viewDidLoad() {
@@ -27,6 +29,7 @@ class ProfileTableViewController: UITableViewController {
         navigationItem.largeTitleDisplayMode = .never
         tableView.tableFooterView = UIView()
 
+        getProfile(id: id)
         setupUI()
     }
     
@@ -50,18 +53,49 @@ class ProfileTableViewController: UITableViewController {
         
     }
     
-    //Mark- set up UI
-    private func setupUI() {
-        if contact != nil {
-            self.title = contact!.name
-            NameLabel.text = contact!.name
-            SurnameLabel.text = contact!.surname
-            userIDLabel.text = contact!.userID
-            StatusLabel.text = contact!.status
-            //BioLabel.text = contact!.bio
-            
-        }
+    private func getProfile(id: String) {
+        
+        AF.request(Shared.url + "/user/contact?userid=" + id, method: .get)
+            .response { (response) in
+                if let code = response.response?.statusCode {
+                    switch code {
+                    case 200:
+                        do {
+                            guard let fetchedData = response.data else { return }
+                            let data = try JSONDecoder().decode(Profile.self, from: fetchedData)
+                            
+                            self.profile = data
+                            
+                            print(self.profile, 1)
+                            
+                            
+                        } catch {
+                            print("Cannot decode contact json")
+                        }
+                    default:
+                        print("Failed to get profile")
+                    }
+                } else {
+                    print("Cannot get into server")
+                }
+                
+                debugPrint(response)
+            }
+        
     }
     
-    
+    //Mark- set up UI
+    private func setupUI() {
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            
+            self.NameLabel.text = self.profile.name
+            self.SurnameLabel.text = self.profile.surname
+            self.userIDLabel.text = self.profile.userID
+            self.StatusLabel.text = self.profile.status
+            self.BioLabel.text = self.profile.bio
+            
+            self.tableView.reloadData()
+        }
+    }
 }

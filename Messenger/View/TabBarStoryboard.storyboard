@@ -131,7 +131,7 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Surname" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p2A-tz-VwE">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Surname" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p2A-tz-VwE">
                                                     <rect key="frame" x="20" y="169" width="374" height="28"/>
                                                     <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="20"/>
                                                     <nil key="textColor"/>
@@ -167,11 +167,13 @@
                                                 <constraint firstItem="BkP-Xf-Wgp" firstAttribute="trailing" secondItem="cVf-xs-qn7" secondAttribute="trailingMargin" id="YDv-Kz-67x"/>
                                                 <constraint firstItem="WRI-g9-Fkr" firstAttribute="leading" secondItem="cVf-xs-qn7" secondAttribute="leadingMargin" id="YFw-yF-ojm"/>
                                                 <constraint firstItem="bsl-uj-Cam" firstAttribute="top" secondItem="YGa-gh-O8b" secondAttribute="bottom" constant="5" id="YX5-7n-N8m"/>
+                                                <constraint firstItem="p2A-tz-VwE" firstAttribute="leading" secondItem="piT-EC-bmO" secondAttribute="leading" id="ZMa-94-fjE"/>
                                                 <constraint firstItem="YGa-gh-O8b" firstAttribute="top" secondItem="cVf-xs-qn7" secondAttribute="topMargin" constant="20" id="e3k-qf-vXi"/>
                                                 <constraint firstItem="BkP-Xf-Wgp" firstAttribute="top" secondItem="WRI-g9-Fkr" secondAttribute="bottom" constant="10" id="gUQ-qp-KkQ"/>
                                                 <constraint firstItem="WRI-g9-Fkr" firstAttribute="trailing" secondItem="cVf-xs-qn7" secondAttribute="trailingMargin" id="gtJ-EL-aLS"/>
                                                 <constraint firstItem="BkP-Xf-Wgp" firstAttribute="leading" secondItem="cVf-xs-qn7" secondAttribute="leadingMargin" id="tGo-bl-ApV"/>
                                                 <constraint firstItem="p2A-tz-VwE" firstAttribute="top" secondItem="bsl-uj-Cam" secondAttribute="bottom" constant="5" id="wGx-Pl-PyH"/>
+                                                <constraint firstItem="p2A-tz-VwE" firstAttribute="trailing" secondItem="piT-EC-bmO" secondAttribute="trailing" id="y58-6B-YS7"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -211,9 +213,9 @@
                     <connections>
                         <outlet property="AvatarImageView" destination="YGa-gh-O8b" id="5GO-T0-BUI"/>
                         <outlet property="BioLabel" destination="BkP-Xf-Wgp" id="V2k-Bz-uAk"/>
+                        <outlet property="NameLabel" destination="bsl-uj-Cam" id="vsM-Ck-Jcb"/>
                         <outlet property="StatusLabel" destination="piT-EC-bmO" id="vjp-CJ-Cfc"/>
                         <outlet property="SurnameLabel" destination="p2A-tz-VwE" id="7hz-P4-yqu"/>
-                        <outlet property="UsernameLabel" destination="bsl-uj-Cam" id="Ay9-7Z-uOK"/>
                         <outlet property="userIDLabel" destination="WRI-g9-Fkr" id="Vvl-QC-3UC"/>
                     </connections>
                 </tableViewController>
@@ -271,6 +273,9 @@
                                                 <constraint firstItem="Jpe-9O-Cnd" firstAttribute="leading" secondItem="eiz-yH-4Io" secondAttribute="leading" constant="10" id="ZSX-fE-FS5"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="r5m-Va-j5Y" kind="show" id="cAG-MN-3y4"/>
+                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" accessoryType="disclosureIndicator" indentationWidth="10" id="OOC-TF-sjh">
                                         <rect key="frame" x="0.0" y="164" width="414" height="43.5"/>
@@ -380,7 +385,6 @@
                         <outlet property="usernameLabel" destination="5I2-xe-8Qy" id="wxc-Mh-v89"/>
                         <outlet property="versionLabel" destination="pmg-qQ-Er0" id="PD6-Bd-rfQ"/>
                         <segue destination="uzf-9E-6Gs" kind="unwind" identifier="unwindLogin" unwindAction="unwindLoginWithSegue:" id="dUB-2G-8oL"/>
-                        <segue destination="r5m-Va-j5Y" kind="show" id="XcZ-Vi-1DT"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4bR-eT-DuU" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -397,7 +401,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <sections>
-                            <tableViewSection headerTitle="Section-1" id="ZeO-z8-xO0">
+                            <tableViewSection id="ZeO-z8-xO0">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="200" id="DQW-dn-iTh">
                                         <rect key="frame" x="0.0" y="28" width="414" height="200"/>
@@ -514,7 +518,7 @@
                     <navigationItem key="navigationItem" title="Edit Profile" largeTitleDisplayMode="never" id="Sxd-oh-Jlb"/>
                     <connections>
                         <outlet property="BioTextField" destination="Om1-JE-bVo" id="pL2-Fg-ZmP"/>
-                        <outlet property="NameTextField" destination="9hv-Ja-6Ek" id="Djx-52-yh7"/>
+                        <outlet property="NameTextField" destination="SWI-re-ay1" id="Jp0-B2-kr7"/>
                         <outlet property="SurnameTextField" destination="hxD-N6-o3J" id="jqe-gS-CpZ"/>
                         <outlet property="avatarImageView" destination="HhT-lK-dWL" id="zCs-Ps-Gee"/>
                     </connections>

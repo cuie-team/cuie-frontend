@@ -33,10 +33,10 @@ class ChatViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         getChatRoom()
         
-        SocketIOManager.sharedInstance.establishConnection()
+//        SocketIOManager.sharedInstance.establishConnection()
 //        SocketIOManager.sharedInstance.connectToServerWithId(id: id)
         
-        SocketIOManager.sharedInstance.testToServer()
+//        SocketIOManager.sharedInstance.testToServer()
     }
     
     //MARK: - setup pull down refersh action

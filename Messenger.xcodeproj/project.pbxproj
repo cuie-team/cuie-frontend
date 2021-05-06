@@ -13,6 +13,7 @@
 		2248A075260A0AC90083AE7F /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2248A074260A0AC90083AE7F /* TabBarController.swift */; };
 		2248A078260A10750083AE7F /* TabBarStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2248A077260A10750083AE7F /* TabBarStoryboard.storyboard */; };
 		2248A08B260A57520083AE7F /* SpinnerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2248A08A260A57520083AE7F /* SpinnerViewController.swift */; };
+		2270AFF426443C75002094DB /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2270AFF326443C75002094DB /* Profile.swift */; };
 		22AF1399261073C000858D21 /* Feed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AF1398261073C000858D21 /* Feed.swift */; };
 		22CB0B6A260CB5E300C51092 /* FeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CB0B69260CB5E300C51092 /* FeedViewController.swift */; };
 		22F0E352263428C200851E47 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22F0E351263428C200851E47 /* ChatViewController.swift */; };
@@ -44,6 +45,7 @@
 		2248A074260A0AC90083AE7F /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		2248A077260A10750083AE7F /* TabBarStoryboard.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = TabBarStoryboard.storyboard; sourceTree = "<group>"; };
 		2248A08A260A57520083AE7F /* SpinnerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpinnerViewController.swift; sourceTree = "<group>"; };
+		2270AFF326443C75002094DB /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
 		22AF1398261073C000858D21 /* Feed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Feed.swift; sourceTree = "<group>"; };
 		22CB0B69260CB5E300C51092 /* FeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewController.swift; sourceTree = "<group>"; };
 		22F0E351263428C200851E47 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
@@ -140,6 +142,7 @@
 				22F0E36526346CE000851E47 /* Media.swift */,
 				F260C9C626343174006E7E81 /* Contact.swift */,
 				2204B49B26412DFA003CDE37 /* ChatRoom.swift */,
+				2270AFF326443C75002094DB /* Profile.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -316,6 +319,7 @@
 				F2887A1125E3989B00B53DD6 /* User.swift in Sources */,
 				22F0E36D263497AD00851E47 /* UIImageCustom.swift in Sources */,
 				2248A08B260A57520083AE7F /* SpinnerViewController.swift in Sources */,
+				2270AFF426443C75002094DB /* Profile.swift in Sources */,
 				22F0E3632634315100851E47 /* Message.swift in Sources */,
 				F260C9C12633FA28006E7E81 /* ContactTableViewCell.swift in Sources */,
 				F2A580472637293D001B0DA3 /* ProfileTableViewController.swift in Sources */,

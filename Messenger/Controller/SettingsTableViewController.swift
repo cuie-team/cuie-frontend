@@ -66,6 +66,7 @@ class SettingsTableViewController: UITableViewController {
         }
     }
     
+    
     private func profileAction() {
         print("profile")
     }

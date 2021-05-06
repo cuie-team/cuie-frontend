@@ -11,8 +11,11 @@ class ProfileTableViewController: UITableViewController {
 
     //Mark - IBoutlet
     @IBOutlet weak var AvatarImageView: UIImageView!
-    @IBOutlet weak var UsernameLabel: UILabel!
+    @IBOutlet weak var NameLabel: UILabel!
     @IBOutlet weak var StatusLabel: UILabel!
+    @IBOutlet weak var SurnameLabel: UILabel!
+    @IBOutlet weak var userIDLabel: UILabel!
+    @IBOutlet weak var BioLabel: UILabel!
     
     //Mark - Vars
     var contact: ContactInfo?
@@ -51,8 +54,12 @@ class ProfileTableViewController: UITableViewController {
     private func setupUI() {
         if contact != nil {
             self.title = contact!.name
-            UsernameLabel.text = contact!.name
+            NameLabel.text = contact!.name
+            SurnameLabel.text = contact!.surname
+            userIDLabel.text = contact!.userID
             StatusLabel.text = contact!.status
+            //BioLabel.text = contact!.bio
+            
         }
     }
     

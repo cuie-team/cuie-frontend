@@ -29,6 +29,7 @@
 		F2887A0E25DA5C6500B53DD6 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2887A0D25DA5C6500B53DD6 /* SettingsTableViewController.swift */; };
 		F2887A1125E3989B00B53DD6 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2887A1025E3989B00B53DD6 /* User.swift */; };
 		F2A580472637293D001B0DA3 /* ProfileTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2A580462637293D001B0DA3 /* ProfileTableViewController.swift */; };
+		F2D1D00F26441EBD0039E3B2 /* EditProfileTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2D1D00E26441EBD0039E3B2 /* EditProfileTableViewController.swift */; };
 		F2E3239A25C14DB60075EB2A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E3239925C14DB60075EB2A /* AppDelegate.swift */; };
 		F2E3239C25C14DB60075EB2A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E3239B25C14DB60075EB2A /* SceneDelegate.swift */; };
 		F2E3239E25C14DB60075EB2A /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E3239D25C14DB60075EB2A /* LoginViewController.swift */; };
@@ -61,6 +62,7 @@
 		F2887A0D25DA5C6500B53DD6 /* SettingsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
 		F2887A1025E3989B00B53DD6 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		F2A580462637293D001B0DA3 /* ProfileTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTableViewController.swift; sourceTree = "<group>"; };
+		F2D1D00E26441EBD0039E3B2 /* EditProfileTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileTableViewController.swift; sourceTree = "<group>"; };
 		F2E3239625C14DB60075EB2A /* Messenger.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Messenger.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F2E3239925C14DB60075EB2A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F2E3239B25C14DB60075EB2A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -86,6 +88,7 @@
 			isa = PBXGroup;
 			children = (
 				F2887A0D25DA5C6500B53DD6 /* SettingsTableViewController.swift */,
+				F2D1D00E26441EBD0039E3B2 /* EditProfileTableViewController.swift */,
 				F2E3239D25C14DB60075EB2A /* LoginViewController.swift */,
 				2248A074260A0AC90083AE7F /* TabBarController.swift */,
 				2248A08A260A57520083AE7F /* SpinnerViewController.swift */,
@@ -302,6 +305,7 @@
 				22AF1399261073C000858D21 /* Feed.swift in Sources */,
 				22F0E36626346CE000851E47 /* Media.swift in Sources */,
 				F2E3239E25C14DB60075EB2A /* LoginViewController.swift in Sources */,
+				F2D1D00F26441EBD0039E3B2 /* EditProfileTableViewController.swift in Sources */,
 				22F0E35D26342F6700851E47 /* MessageBoardViewController.swift in Sources */,
 				22F0E36926347D1300851E47 /* PhotoViewerController.swift in Sources */,
 				2204B4A52641BAE6003CDE37 /* Socket.swift in Sources */,

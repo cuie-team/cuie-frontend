@@ -140,6 +140,7 @@ extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
         
         let boardVC = MessageBoardViewController()
         boardVC.title = chatRooms[indexPath.row].name
+        boardVC.roomID = chatRooms[indexPath.row].roomID
         
         navigationController?.pushViewController(boardVC, animated: true)
     }

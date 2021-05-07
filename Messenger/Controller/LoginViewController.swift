@@ -67,7 +67,13 @@ class LoginViewController: UIViewController {
     }
     
     @IBAction func SingUpButtonPressed(_ sender: UIButton) {
+        NameTextField.text! = ""
+        SurnameTextField.text! = ""
+        emailTextField.text! = ""
+        StatusTextField.text! = ""
+        
         updateUIFor(login: sender.titleLabel?.text == "Log In.")
+        view.endEditing(false)
     }
     
     @IBAction func unwindLogin(segue: UIStoryboardSegue) { }
@@ -159,16 +165,23 @@ extension LoginViewController {
             "password": PasswordTextField.text,
             "status": StatusTextField.text
         ]
-        let request = AF.request(Shared.url + "/signup", method: .post, parameters: registerParams)
+        let request = AF.request(Shared.url + "/signup", method: .post, parameters: registerParams, encoder: JSONParameterEncoder.default)
         
         request.responseJSON { (data) in
             if let code = data.response?.statusCode {
                 switch code {
-                case 200: break
-                default: break
+                case 200:
+                    self.presentSuccessAlert()
+                    self.updateUIFor(login: true)
+                case 403:
+                    self.presentDuplicatedAlert()
+                default:
+                    print("Failed to connect with server")
                 }
             }
         }
+        
+        PasswordTextField.text! = ""
     }
     
     private func logIn() {
@@ -205,6 +218,7 @@ extension LoginViewController {
         let board = UIStoryboard(name: "TabBarStoryboard", bundle: nil)
         guard let homeView = board.instantiateViewController(withIdentifier: "tabbar") as? TabBarController else { return }
         
+        
         self.navigationController?.pushViewController(homeView, animated: true)
     }
     
@@ -229,6 +243,18 @@ extension LoginViewController {
     
     private func presentAlert() {
         let alert = UIAlertController(title: "Login Failed", message: "Id or password is incorrect.", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Close", style: .cancel, handler: nil))
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    private func presentSuccessAlert() {
+        let alert = UIAlertController(title: "Sign up successful", message: "You can now sign in with this account.", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Close", style: .cancel, handler: nil))
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    private func presentDuplicatedAlert() {
+        let alert = UIAlertController(title: "Sign up failed", message: "This userID has already used.", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Close", style: .cancel, handler: nil))
         self.present(alert, animated: true, completion: nil)
     }

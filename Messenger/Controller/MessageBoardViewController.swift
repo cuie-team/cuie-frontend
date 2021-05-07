@@ -8,6 +8,7 @@
 import UIKit
 import MessageKit
 import InputBarAccessoryView
+import Alamofire
 
 class MessageBoardViewController: MessagesViewController {
     
@@ -15,13 +16,23 @@ class MessageBoardViewController: MessagesViewController {
     
     var otherUser: Sender!
     
-    var messages: [Message] = []
+    var roomID: String = ""
+    
+    var room: RoomInfo = RoomInfo()
+    
+    var messages: [Message] = [] {
+        didSet {
+            DispatchQueue.main.async {
+                self.messagesCollectionView.reloadData()
+            }
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        getRoomInfo()
         setUser()
-        getMessage()
         setCollectionView()
         setInputBar()
     }
@@ -32,29 +43,9 @@ class MessageBoardViewController: MessagesViewController {
     }
     
     private func getMessage() {
-        messages.append(Message(
-                            sender: currentUser,
-                            messageId: UUID().uuidString,
-                            sentDate: Date().addingTimeInterval(-96400),
-                            kind: .text("Hello!!")))
-        
-        messages.append(Message(
-                            sender: otherUser,
-                            messageId: UUID().uuidString,
-                            sentDate: Date().addingTimeInterval(-86200),
-                            kind: .text("How's it going")))
-        
-        messages.append(Message(
-                            sender: currentUser,
-                            messageId: UUID().uuidString,
-                            sentDate: Date().addingTimeInterval(-6400),
-                            kind: .text("Covid19 spreading")))
-        
-        messages.append(Message(
-                            sender: currentUser,
-                            messageId: UUID().uuidString,
-                            sentDate: Date().addingTimeInterval(-6200),
-                            kind: .text("Sad")))
+        room.chats?.forEach({ (chat) in
+            messages.append(Message(with: chat, sender: chat.isCurrentUser() ? currentUser: otherUser))
+        })
     }
     
     private func setCollectionView() {
@@ -303,7 +294,7 @@ extension MessageBoardViewController: MessagesDataSource, MessagesLayoutDelegate
     
     //MARK: - setup for InputBarAccessoryViewDelegate
     func inputBar(_ inputBar: InputBarAccessoryView, didPressSendButtonWith text: String) {
-        let message = Message(sender: currentUser, messageId: String(messages.count + 1), sentDate: Date(), kind: .photo(Media(url: nil, image: UIImage(named: "Tim-Cook"), placeholderImage: UIImage(named: "Tim-Cook")!, size: CGSize(width: 250, height: 200))))
+        let message = Message(sender: currentUser, messageId: "\(messages.count + 1)", text: text)
         
         insertNewMessage(message)
 
@@ -330,5 +321,38 @@ extension MessageBoardViewController: MessageCellDelegate {
         default:
             break
         }
+    }
+}
+
+extension MessageBoardViewController {
+    //MARK:- Get room information
+    private func getRoomInfo() {
+        AF.request(Shared.url + "/user/room/info?roomid=" + roomID, method: .get)
+            .response { (response) in
+                if let code = response.response?.statusCode {
+                    switch code {
+                    case 200:
+                        do {
+                            guard let fetchedData = response.data else { return }
+                            let data = try JSONDecoder().decode(RoomInfo.self, from: fetchedData)
+                    
+                            self.room = data
+                            
+                        } catch {
+                            print("Cannot decode roomInfo json")
+                        }
+                    default:
+                        print("Error reqeust")
+                    }
+                } else {
+                    print("Cannot get into server")
+                }
+                
+                debugPrint(response)
+                
+                self.getMessage()
+                self.messagesCollectionView.reloadData()
+            }
+        
     }
 }

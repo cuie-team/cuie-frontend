@@ -19,6 +19,8 @@ struct ContactInfo: Codable {
     let name: String
     let surname: String
     let status: String
+    let major: String?
+    let picpath: String?
     
     func search(by text: String) -> Bool {
         if text == "" { return true }

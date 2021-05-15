@@ -9,4 +9,5 @@ import Foundation
 
 class Shared {
     static let url: String = "http://35.213.134.44:3000"
+    static var name: String = ""
 }

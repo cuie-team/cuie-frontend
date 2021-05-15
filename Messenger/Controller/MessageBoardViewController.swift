@@ -9,42 +9,74 @@ import UIKit
 import MessageKit
 import InputBarAccessoryView
 import Alamofire
+import Kingfisher
 
 class MessageBoardViewController: MessagesViewController {
     
     var currentUser: Sender!
     
-    var otherUser: Sender!
+    var members: [Sender] = []
     
     var roomID: String = ""
     
     var room: RoomInfo = RoomInfo()
     
-    var messages: [Message] = [] {
-        didSet {
-            DispatchQueue.main.async {
-                self.messagesCollectionView.reloadData()
-            }
-        }
-    }
+    var messages: [Message] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        getRoomInfo()
-        setUser()
         setCollectionView()
         setInputBar()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        getRoomInfo()
+    }
+    
+    private func setNavigation() {
+        let add = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addTapped))
+        if room.members.count == 2 {
+            navigationItem.rightBarButtonItem = add
+        } else {
+            let leave = UIBarButtonItem(image: UIImage(systemName: "arrowshape.turn.up.right"), style: .plain, target: self, action: #selector(leaveTapped))
+            navigationItem.rightBarButtonItems = [leave, add]
+        }
+        
+    }
+    
+    @objc func addTapped() {
+        let alert = UIAlertController(title: "Add to group", message: "Please enter UserID", preferredStyle: .alert)
+        alert.addTextField { (textfield) in
+            textfield.text = ""
+            textfield.placeholder = "Invite by UserID"
+        }
+        alert.addAction(UIAlertAction(title: "Add", style: .default, handler: { (_) in
+            let textField = alert.textFields![0]
+            print("Text field: \(textField.text!)")
+        }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        
+        self.present(alert, animated: true)
+    }
+    
+    @objc func leaveTapped() {
+        print("leave group")
+    }
+    
     private func setUser() {
-        self.currentUser = Sender(senderId: "self", displayName: "Tim-Cook")
-        self.otherUser = Sender(senderId: "other", displayName: title ?? "Unknown")
+        self.currentUser = Sender(senderId: room.owner!.userID, displayName: room.owner!.name)
+        
+        room.members.forEach { (info) in
+            members.append(Sender(senderId: info.userID, displayName: info.name))
+        }
+        
+//        self.otherUser = Sender(senderId: "other", displayName: title ?? "Unknown")
     }
     
     private func getMessage() {
         room.chats?.forEach({ (chat) in
-            messages.append(Message(with: chat, sender: chat.isCurrentUser() ? currentUser: otherUser))
+            messages.append(Message(with: chat, sender: chat.search(by: members)!))
         })
     }
     
@@ -171,8 +203,9 @@ extension MessageBoardViewController: MessagesDataSource, MessagesLayoutDelegate
     
     func configureAvatarView(_ avatarView: AvatarView, for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) {
         
-        if let image = UIImage(named: message.sender.displayName) {
-            avatarView.image = image
+        if let path = room.getAvatar(by: message.sender.senderId) {
+            let url = URL(string: Shared.url + path)
+            avatarView.kf.setImage(with: url)
         } else {
             avatarView.image = UIImage(named: "avatar")
         }
@@ -296,6 +329,9 @@ extension MessageBoardViewController: MessagesDataSource, MessagesLayoutDelegate
     func inputBar(_ inputBar: InputBarAccessoryView, didPressSendButtonWith text: String) {
         let message = Message(sender: currentUser, messageId: "\(messages.count + 1)", text: text)
         
+        let messageObject = MessageObject(roomID: roomID, message: text, messageType: "TEXT")
+        
+        SocketIOManager.sharedInstance.sendMessage(message: messageObject)
         insertNewMessage(message)
 
         inputBar.inputTextView.text = ""
@@ -335,8 +371,13 @@ extension MessageBoardViewController {
                         do {
                             guard let fetchedData = response.data else { return }
                             let data = try JSONDecoder().decode(RoomInfo.self, from: fetchedData)
-                    
+                            
                             self.room = data
+                            
+                            self.setUser()
+                            self.getMessage()
+                            self.setNavigation()
+                            self.messagesCollectionView.reloadData()
                             
                         } catch {
                             print("Cannot decode roomInfo json")
@@ -349,10 +390,8 @@ extension MessageBoardViewController {
                 }
                 
                 debugPrint(response)
-                
-                self.getMessage()
-                self.messagesCollectionView.reloadData()
             }
         
     }
+    
 }

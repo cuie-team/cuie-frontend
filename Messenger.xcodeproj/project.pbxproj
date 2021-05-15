@@ -10,6 +10,7 @@
 		2204B496263B0CB5003CDE37 /* Shared.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204B495263B0CB5003CDE37 /* Shared.swift */; };
 		2204B49C26412DFA003CDE37 /* ChatRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204B49B26412DFA003CDE37 /* ChatRoom.swift */; };
 		2204B4A52641BAE6003CDE37 /* Socket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204B4A42641BAE6003CDE37 /* Socket.swift */; };
+		222980922650168200A9A751 /* ChatAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222980912650168200A9A751 /* ChatAnimation.swift */; };
 		2248A075260A0AC90083AE7F /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2248A074260A0AC90083AE7F /* TabBarController.swift */; };
 		2248A078260A10750083AE7F /* TabBarStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2248A077260A10750083AE7F /* TabBarStoryboard.storyboard */; };
 		2248A08B260A57520083AE7F /* SpinnerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2248A08A260A57520083AE7F /* SpinnerViewController.swift */; };
@@ -42,6 +43,7 @@
 		2204B495263B0CB5003CDE37 /* Shared.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shared.swift; sourceTree = "<group>"; };
 		2204B49B26412DFA003CDE37 /* ChatRoom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoom.swift; sourceTree = "<group>"; };
 		2204B4A42641BAE6003CDE37 /* Socket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Socket.swift; sourceTree = "<group>"; };
+		222980912650168200A9A751 /* ChatAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatAnimation.swift; sourceTree = "<group>"; };
 		2248A074260A0AC90083AE7F /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		2248A077260A10750083AE7F /* TabBarStoryboard.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = TabBarStoryboard.storyboard; sourceTree = "<group>"; };
 		2248A08A260A57520083AE7F /* SpinnerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpinnerViewController.swift; sourceTree = "<group>"; };
@@ -86,6 +88,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		222980902650166B00A9A751 /* Animation */ = {
+			isa = PBXGroup;
+			children = (
+				222980912650168200A9A751 /* ChatAnimation.swift */,
+			);
+			path = Animation;
+			sourceTree = "<group>";
+		};
 		2248A06E2609FD6C0083AE7F /* Controller */ = {
 			isa = PBXGroup;
 			children = (
@@ -170,6 +180,7 @@
 			children = (
 				F2E3239925C14DB60075EB2A /* AppDelegate.swift */,
 				F2E3239B25C14DB60075EB2A /* SceneDelegate.swift */,
+				222980902650166B00A9A751 /* Animation */,
 				22F0E36B2634978D00851E47 /* Utils */,
 				F2887A1325E398A700B53DD6 /* Model */,
 				22CB0B66260A6DAE00C51092 /* View */,
@@ -315,6 +326,7 @@
 				22F0E36026342FE200851E47 /* Sender.swift in Sources */,
 				F2E3239A25C14DB60075EB2A /* AppDelegate.swift in Sources */,
 				2248A075260A0AC90083AE7F /* TabBarController.swift in Sources */,
+				222980922650168200A9A751 /* ChatAnimation.swift in Sources */,
 				2204B49C26412DFA003CDE37 /* ChatRoom.swift in Sources */,
 				F2887A1125E3989B00B53DD6 /* User.swift in Sources */,
 				22F0E36D263497AD00851E47 /* UIImageCustom.swift in Sources */,

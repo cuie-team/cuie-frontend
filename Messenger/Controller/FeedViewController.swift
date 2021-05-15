@@ -82,6 +82,12 @@ extension FeedViewController: UITableViewDataSource, UITableViewDelegate {
         }
     }
     
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        let type = AnimationType.makeMoveUpWithFade(rowHeight: cell.frame.height, duration: 0.5, delayFactor: 0.05)
+        let animation = ChatAnimation(self.tableView, animation: type)
+        animation.animate(cell: cell, at: indexPath, in: tableView)
+    }
+    
 }
 
 class FeedCell: UITableViewCell {

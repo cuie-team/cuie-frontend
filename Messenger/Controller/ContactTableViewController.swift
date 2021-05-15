@@ -34,6 +34,8 @@ class ContactTableViewController: UITableViewController, UISearchResultsUpdating
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        filteredContact = []
+        tableView.reloadData()
         
         navigationItem.largeTitleDisplayMode = .always
         navigationController?.navigationBar.prefersLargeTitles = true
@@ -193,6 +195,12 @@ class ContactTableViewController: UITableViewController, UISearchResultsUpdating
         profileView.id = contact.userID
         
         self.navigationController?.pushViewController(profileView, animated: true)
+    }
+    
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        let type = AnimationType.makeMoveUpWithFade(rowHeight: cell.frame.height, duration: 0.3, delayFactor: 0.05)
+        let animation = ChatAnimation(tableView, animation: type)
+        animation.animate(cell: cell, at: indexPath, in: tableView)
     }
     
 }

@@ -163,7 +163,7 @@ extension LoginViewController {
             "userID": StudentNumberTextField.text,
             "email": emailTextField.text,
             "password": PasswordTextField.text,
-            "status": StatusTextField.text
+            "status": mapStatus(status: StatusTextField.text)
         ]
         let request = AF.request(Shared.url + "/signup", method: .post, parameters: registerParams, encoder: JSONParameterEncoder.default)
         
@@ -195,8 +195,10 @@ extension LoginViewController {
             if let code = response.response?.statusCode {
                 switch code {
                 case 200:
+                    SocketIOManager.sharedInstance.establishConnection()
                     self.createSpinnerView {
                         self.changeToHome()
+                        SocketIOManager.sharedInstance.signin(user: parameter)
                     }
                 default:
                     self.createSpinnerView {
@@ -232,7 +234,7 @@ extension LoginViewController {
         child.didMove(toParent: self)
         
         // wait three seconds to simulate some work happening
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) {
             // then remove the spinner view controller
             child.willMove(toParent: nil)
             child.view.removeFromSuperview()
@@ -257,6 +259,30 @@ extension LoginViewController {
         let alert = UIAlertController(title: "Sign up failed", message: "This userID has already used.", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Close", style: .cancel, handler: nil))
         self.present(alert, animated: true, completion: nil)
+    }
+    
+    private func mapStatus(status: String?) -> String? {
+        
+        switch status {
+        case "Researcher":
+            return "professor"
+        case "2nd Student":
+            return "student2"
+        case "3rd Student":
+            return "student3"
+        case "4th Student":
+            return "student4"
+        case "M.Eng":
+            return "studentM"
+        case "Ph.D":
+            return "studentD"
+        case "Administrative staff":
+            return "staff"
+        case "Labratory staff":
+            return "staff"
+        default:
+            return nil
+        }
     }
     
 }

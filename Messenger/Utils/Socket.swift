@@ -7,13 +7,11 @@
 
 import Foundation
 import SocketIO
-import SwiftyJSON
 
 class SocketIOManager: NSObject {
     static let sharedInstance = SocketIOManager()
     
-    private let manager = SocketManager(socketURL: URL(string: Shared.url)!,
-                                config: [.log(true), .compress])
+    private let manager = SocketManager(socketURL: URL(string: Shared.url)!, config: [.log(false), .compress])
     
     private var socket: SocketIOClient!
     
@@ -21,21 +19,25 @@ class SocketIOManager: NSObject {
         super.init()
         
         socket = manager.defaultSocket
-    }
-    
-    func testToServer() {
-        socket.emit("test:to_server", "hello ponek")
-        socket.on("test:from_server") { (dataArray, ack) in
-            print(dataArray)
+        socket.on(clientEvent: .connect) {data, _ in
+            print("socket connected")
+        }
+        
+        socket.on("signin:response") { (data, _) in
+            print(data)
+        }
+        
+        socket.on("chat:send:response") { (data, _) in
+            print(data)
         }
     }
-
-    func connectToServerWithId(id: [String: Any]) {
-        socket.emit("session_id", id)
+    
+    func signin(user: User) {
+        socket.emit("signin", user.dictionary!)
     }
     
-    func sendMessage(message: String, with id: String) {
-        socket.emit("chatMessage", id, message)
+    func sendMessage(message: MessageObject) {
+        socket.emit("chat:send", message.dictionary!)
     }
     
     func getMessage(completionHandler: @escaping (_ messagesInfo: [String: AnyObject]) -> Void) {

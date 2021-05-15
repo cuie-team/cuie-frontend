@@ -7,6 +7,7 @@
 
 import UIKit
 import Alamofire
+import Kingfisher
 
 class ChatViewController: UIViewController {
 
@@ -32,11 +33,11 @@ class ChatViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         getChatRoom()
-        
-//        SocketIOManager.sharedInstance.establishConnection()
-//        SocketIOManager.sharedInstance.connectToServerWithId(id: id)
-        
-//        SocketIOManager.sharedInstance.testToServer()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        chatRooms = []
+        chatTable.reloadData()
     }
     
     //MARK: - setup pull down refersh action
@@ -96,6 +97,7 @@ extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "chat_cell", for: indexPath) as! ChatViewCellController
+        
         var dateText = ""
         
         if let msgTime = chatRooms[indexPath.row].lastMsgTime {
@@ -112,7 +114,10 @@ extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
             dateText += "\(formatter.string(from: date))"
         }
         
-        cell.name?.text = chatRooms[indexPath.row].name
+        let numberOfMembers = chatRooms[indexPath.row].roomType == "GROUP" ?
+            " (\(chatRooms[indexPath.row].members.count))": ""
+        
+        cell.name?.text = chatRooms[indexPath.row].name + numberOfMembers
         
         cell.detail?.text = chatRooms[indexPath.row].lastMsgContext
         cell.detail?.textColor = .secondaryLabel
@@ -120,8 +125,10 @@ extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
         cell.date?.text = dateText
         cell.date?.textColor = .secondaryLabel
         
-        if let image = UIImage(named: chatRooms[indexPath.row].name) {
-            cell.avatar?.image = image.circleMasked
+        if let path = chatRooms[indexPath.row].getRoomImg() {
+            let url = URL(string: Shared.url + path)
+            cell.avatar.kf.setImage(with: url)
+            cell.avatar.roundedImage()
         } else {
             cell.avatar?.image = UIImage(named: "avatar")
         }
@@ -145,6 +152,11 @@ extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
         navigationController?.pushViewController(boardVC, animated: true)
     }
     
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        let type = AnimationType.makeMoveUpWithFade(rowHeight: cell.frame.height, duration: 0.5, delayFactor: 0.05)
+        let animation = ChatAnimation(chatTable, animation: type)
+        animation.animate(cell: cell, at: indexPath, in: tableView)
+    }
 }
 
 class ChatViewCellController: UITableViewCell {

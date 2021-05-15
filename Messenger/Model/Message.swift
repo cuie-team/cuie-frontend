@@ -46,3 +46,9 @@ extension MessageKind {
         }
     }
 }
+
+struct MessageObject: Codable {
+    let roomID: String
+    let message: String
+    let messageType: String
+}

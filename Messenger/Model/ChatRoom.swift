@@ -15,29 +15,60 @@ struct ChatRoom: Codable {
     let lastMsgTime: String?
     let lastMsgContext: String?
     let lastMsgType: String?
-    let members: [String]
+    let members: [ContactInfo]
+    let owner: ContactInfo
+    
+    func getRoomImg() -> String? {
+        if roomType == "SINGLE" {
+            for info in members {
+                if info.userID != owner.userID {
+                    return info.picpath
+                }
+            }
+        }
+        return nil
+    }
 }
 
 struct RoomInfo: Codable {
     var roomID: String = ""
     var name: String?
-    var lastMsg: String?
-    var lastMsgTime: String?
     var members: [ContactInfo] = []
+    var owner: ContactInfo?
     var chats: [ChatInfo]?
+    
+    func getName(by id: String) -> String? {
+        for info in members {
+            if info.userID == id {
+                return info.name
+            }
+        }
+        return nil
+    }
+    
+    func getAvatar(by id: String) -> String? {
+        for info in members {
+            if info.userID == id {
+                return info.picpath
+            }
+        }
+        return nil
+    }
 }
 
 struct ChatInfo: Codable {
     let messageID: String
     let senderID: String
-    let name: String
-    let surname: String
-    let status: String
     let message: String
-    let message_type: String
+    let messageType: String
     let sendtime: String
     
-    func isCurrentUser() -> Bool {
-        return true
+    func search(by members: [Sender]) -> Sender? {
+        for sender in members {
+            if sender.senderId == senderID {
+                return sender
+            }
+        }
+        return nil
     }
 }

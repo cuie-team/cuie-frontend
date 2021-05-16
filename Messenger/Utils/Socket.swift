@@ -30,6 +30,7 @@ class SocketIOManager: NSObject {
         socket.on("chat:send:response") { (data, _) in
             print(data)
         }
+        
     }
     
     func signin(user: User) {
@@ -40,11 +41,9 @@ class SocketIOManager: NSObject {
         socket.emit("chat:send", message.dictionary!)
     }
     
-    func getMessage(completionHandler: @escaping (_ messagesInfo: [String: AnyObject]) -> Void) {
-        socket.on("newMessage") { (dataArray, ack) in
-            let messageDictionary = [String: AnyObject]()
-            
-            completionHandler(messageDictionary)
+    func getMessage(completionHandler: @escaping (_ messagesInfo: [String: String]) -> Void) {
+        socket.on("chat:receive") { (dataArray, _) in
+            completionHandler(dataArray[0] as! [String : String])
         }
     }
     

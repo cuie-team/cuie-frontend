@@ -9,7 +9,6 @@ import UIKit
 import MessageKit
 import InputBarAccessoryView
 import Alamofire
-import Kingfisher
 
 class MessageBoardViewController: MessagesViewController {
     
@@ -28,6 +27,16 @@ class MessageBoardViewController: MessagesViewController {
         
         setCollectionView()
         setInputBar()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        SocketIOManager.sharedInstance.getMessage { (messageObj) in
+            DispatchQueue.main.async {
+                let chat = ChatInfo(messageID: messageObj["messageID"]!, senderID: messageObj["senderID"]!, message: messageObj["message"]!, messageType: messageObj["messageType"]!, sendtime: messageObj["sendtime"]!)
+                
+                self.insertNewMessage(Message(with: chat, sender: chat.search(by: self.members)!))
+            }
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {

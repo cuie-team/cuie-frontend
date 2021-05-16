@@ -8,9 +8,16 @@
 import Foundation
 import UIKit
 
-struct Feed {
-    var name: String
-    var date: String
-    var description: String
-    var image: UIImage
+struct Feed: Codable {
+    let postID: String
+    let head: String
+    let body: String
+    let senderID: String
+    let posttime: String?
+    let filepath: String?
+    let senderName: String
+    let senderSurname: String
+    let senderStatus: String
+    let senderMajor: String?
+    let senderPicpath: String?
 }

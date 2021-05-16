@@ -14,5 +14,5 @@ struct Profile: Codable {
     var status: String  = ""
     var email: String  = ""
     var bio: String?
-    var picPath: String?
+    var picpath: String?
 }

@@ -33,6 +33,10 @@ class ProfileTableViewController: UITableViewController {
         setupUI()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        
+    }
+    
     //Mark - Table View Delegates
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = UIView()
@@ -66,9 +70,6 @@ class ProfileTableViewController: UITableViewController {
                             
                             self.profile = data
                             
-                            print(self.profile, 1)
-                            
-                            
                         } catch {
                             print("Cannot decode contact json")
                         }
@@ -87,13 +88,25 @@ class ProfileTableViewController: UITableViewController {
     //Mark- set up UI
     private func setupUI() {
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
             
             self.NameLabel.text = self.profile.name
             self.SurnameLabel.text = self.profile.surname
             self.userIDLabel.text = self.profile.userID
             self.StatusLabel.text = self.profile.status
             self.BioLabel.text = self.profile.bio
+            if let path = self.profile.picpath {
+                let url = URL(string: Shared.url + path)
+                
+                let imageView = UIImageView()
+                imageView.kf.setImage(with: url)
+                self.AvatarImageView.image =  imageView.image?.circleMasked
+                
+                //            cell.avatar.kf.setImage(with: url)
+                //            cell.avatar.roundedImage()
+            } else {
+                self.AvatarImageView.image = UIImage(named: "avatar")
+            }
             
             self.tableView.reloadData()
         }

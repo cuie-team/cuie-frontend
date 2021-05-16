@@ -16,11 +16,23 @@ class EditProfileTableViewController: UITableViewController {
     @IBOutlet weak var SurnameTextField: UITextField!
     @IBOutlet weak var BioTextField: UITextField!
     
+    var image = UIImage()
+    var name = ""
+    var surname = ""
+    var bio = ""
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         tableView.tableFooterView = UIView()
+        setUp()
+    }
     
+    private func setUp() {
+        NameTextField.text! = name
+        SurnameTextField.text! = surname
+        avatarImageView.image = image
+        BioTextField.text! = bio
     }
 }
 

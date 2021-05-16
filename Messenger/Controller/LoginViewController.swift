@@ -163,7 +163,7 @@ extension LoginViewController {
             "userID": StudentNumberTextField.text,
             "email": emailTextField.text,
             "password": PasswordTextField.text,
-            "status": mapStatus(status: StatusTextField.text)
+            "status": Shared.mapStatus(status: StatusTextField.text)
         ]
         let request = AF.request(Shared.url + "/signup", method: .post, parameters: registerParams, encoder: JSONParameterEncoder.default)
         
@@ -260,29 +260,4 @@ extension LoginViewController {
         alert.addAction(UIAlertAction(title: "Close", style: .cancel, handler: nil))
         self.present(alert, animated: true, completion: nil)
     }
-    
-    private func mapStatus(status: String?) -> String? {
-        
-        switch status {
-        case "Researcher":
-            return "professor"
-        case "2nd Student":
-            return "student2"
-        case "3rd Student":
-            return "student3"
-        case "4th Student":
-            return "student4"
-        case "M.Eng":
-            return "studentM"
-        case "Ph.D":
-            return "studentD"
-        case "Administrative staff":
-            return "staff"
-        case "Labratory staff":
-            return "staff"
-        default:
-            return nil
-        }
-    }
-    
 }

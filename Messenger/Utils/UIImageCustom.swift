@@ -31,9 +31,17 @@ extension UIImage {
 
 extension UIImageView {
     func roundedImage() {
-        self.layer.cornerRadius = (self.frame.width / 2)
-        self.clipsToBounds = true
-        self.layer.masksToBounds = true
+        let shapeLayer = CAShapeLayer()
+        shapeLayer.path = UIBezierPath(ovalIn:
+                                        CGRect(x: bounds.origin.x, y: bounds.origin.y, width: bounds.width, height: bounds.height
+                                        )).cgPath
+        layer.mask = shapeLayer
+        self.contentMode = .scaleAspectFit
+//        self.layer.cornerRadius = self.frame.size.width / 2
+//        self.clipsToBounds = true
+//        self.layer.borderWidth = 3
+//        self.layer.borderColor = UIColor.white.cgColor
+        
     }
 }
 

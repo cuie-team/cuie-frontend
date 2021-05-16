@@ -31,6 +31,10 @@ class ChatViewController: UIViewController {
         navigationItem.backButtonDisplayMode = .minimal
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        chatTable.reloadData()
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         getChatRoom()
     }
@@ -76,7 +80,7 @@ class ChatViewController: UIViewController {
                             self.chatTable.reloadData()
                             successCompletion()
                         } catch {
-                            print("Cannot decode contact json")
+                            print("Cannot decode chat json")
                         }
                     default:
                         failedCompletion()
@@ -84,7 +88,6 @@ class ChatViewController: UIViewController {
                 } else {
                     print("Cannot get into server")
                 }
-                
                 debugPrint(response)
             }
     }
@@ -127,12 +130,16 @@ extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
         
         if let path = chatRooms[indexPath.row].getRoomImg() {
             let url = URL(string: Shared.url + path)
-            cell.avatar.kf.setImage(with: url)
-            cell.avatar.roundedImage()
+            
+            let imageView = UIImageView()
+            imageView.kf.setImage(with: url)
+            cell.avatar.image =  imageView.image?.circleMasked
+            
+//            cell.avatar.kf.setImage(with: url)
+//            cell.avatar.roundedImage()
         } else {
             cell.avatar?.image = UIImage(named: "avatar")
         }
-        
         
         return cell
     }
@@ -156,6 +163,7 @@ extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
         let type = AnimationType.makeMoveUpWithFade(rowHeight: cell.frame.height, duration: 0.5, delayFactor: 0.05)
         let animation = ChatAnimation(chatTable, animation: type)
         animation.animate(cell: cell, at: indexPath, in: tableView)
+        
     }
 }
 

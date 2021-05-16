@@ -26,13 +26,20 @@ class ContactTableViewCell: UITableViewCell {
 
     func configure(contact: ContactInfo) {
         UsernameLabel.text = contact.name+" "+contact.surname
-        StatsLabel.text = contact.status
-        setAvatar(avatarLink: "")
+        StatsLabel.text = Shared.decodeStatus(status: contact.status)
+        setAvatar(avatarLink: contact.picpath)
     }
     
-    private func setAvatar(avatarLink: String) {
-        if avatarLink != "" {
+    private func setAvatar(avatarLink: String?) {
+        if let url = avatarLink {
+            let path = URL(string: Shared.url + url)
             
+            let imageView = UIImageView()
+            imageView.kf.setImage(with: path)
+            self.AvatarImageView.image =  imageView.image?.circleMasked
+            
+            //            cell.avatar.kf.setImage(with: url)
+            //            cell.avatar.roundedImage()
         } else {
             self.AvatarImageView.image = UIImage(named: "avatar")
         }

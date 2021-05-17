@@ -63,10 +63,13 @@
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <textInputTraits key="textInputTraits"/>
                                         </textField>
-                                        <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eRL-Yu-Nlo">
+                                        <button opaque="NO" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eRL-Yu-Nlo">
                                             <rect key="frame" x="20" y="379" width="21" height="22"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                             <state key="normal" image="hand.thumbsup" catalog="system"/>
+                                            <connections>
+                                                <action selector="likeAction:" destination="rAB-2i-yss" eventType="touchUpInside" id="H07-jb-Ooz"/>
+                                            </connections>
                                         </button>
                                     </subviews>
                                     <constraints>

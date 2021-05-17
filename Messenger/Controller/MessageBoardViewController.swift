@@ -47,15 +47,24 @@ class MessageBoardViewController: MessagesViewController {
     }
     
     private func setNavigation() {
-        let add = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addTapped))
+        let add = UIBarButtonItem(image: UIImage(systemName: "person.crop.circle.badge.plus"), style: .plain, target: self, action: #selector(addTapped))
+//        let add = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addTapped))
         if room.members.count > 2 {
             let leave = UIBarButtonItem(image: UIImage(systemName: "arrowshape.turn.up.right"), style: .plain, target: self, action: #selector(leaveTapped))
             navigationItem.rightBarButtonItems = [leave, add]
         }
     }
     
-    private func getSuccessAlert() {
-        let alert = UIAlertController(title: "Created sucessful", message: "Let's talk!", preferredStyle: .alert)
+    private func presentSuccessAlert() {
+        let alert = UIAlertController(title: "Invitation has been sent", message: "Let's talk!", preferredStyle: .alert)
+        
+        alert.addAction(UIAlertAction(title: "Close", style: .cancel, handler: nil))
+        
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    private func presentDuplicateIdAlert() {
+        let alert = UIAlertController(title: "Invite failed", message: "This ID has been in this group.", preferredStyle: .alert)
         
         alert.addAction(UIAlertAction(title: "Close", style: .cancel, handler: nil))
         
@@ -70,7 +79,9 @@ class MessageBoardViewController: MessagesViewController {
                 if let code = response.response?.statusCode {
                     switch code {
                     case 200:
-                        self.getSuccessAlert()
+                        self.presentSuccessAlert()
+                    case 422:
+                        self.presentDuplicateIdAlert()
                     default:
                         print("invite failed")
                     }

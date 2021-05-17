@@ -43,11 +43,6 @@ class FeedViewController: UITableViewController {
         tableView.reloadData()
     }
     
-    
-    @IBAction func likeAction(_ sender: Any) {
-        print("liked")
-    }
-    
     private func setupReload() {
         pullControl = UIRefreshControl()
         pullControl.addTarget(self, action: #selector(refresh(_:)), for: .valueChanged)
@@ -109,7 +104,6 @@ extension FeedViewController {
         } else {
             cell.avatar?.image = UIImage(named: "avatar")
         }
-        
         
         cell.caption.text! = feeds[indexPath.row].body
         cell.caption.numberOfLines = 0
@@ -182,7 +176,18 @@ class FeedCell: UITableViewCell {
     @IBOutlet weak var likeButton: UIButton!
     @IBOutlet weak var commendTextField: UITextField!
     
+    var isLiked: Bool = false
+    
     override func awakeFromNib() {
         super.awakeFromNib()
+    }
+    
+    @IBAction func likeAction(_ sender: UIButton) {
+        if isLiked {
+            sender.setImage(UIImage(systemName: "hand.thumbsup"), for: .normal)
+        } else {
+            sender.setImage(UIImage(systemName: "hand.thumbsup.fill"), for: .normal)
+        }
+        isLiked.toggle()
     }
 }

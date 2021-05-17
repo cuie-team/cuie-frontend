@@ -181,4 +181,8 @@ class FeedCell: UITableViewCell {
     @IBOutlet weak var postedImage: UIImageView!
     @IBOutlet weak var likeButton: UIButton!
     @IBOutlet weak var commendTextField: UITextField!
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+    }
 }

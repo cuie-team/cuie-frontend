@@ -243,11 +243,11 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="InviteCell" rowHeight="80" id="LcJ-FX-iQk" customClass="InviteTableViewCell" customModule="Messenger" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="InviteCell" rowHeight="80" id="LcJ-FX-iQk" customClass="InviteTableViewCell" customModule="Messenger" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="414" height="80"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="LcJ-FX-iQk" id="JcK-ep-QuM">
-                                    <rect key="frame" x="0.0" y="0.0" width="383" height="80"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="80"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="avatar" translatesAutoresizingMaskIntoConstraints="NO" id="2Lb-OC-YQm">
@@ -269,11 +269,21 @@
                                             <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Bl6-PT-BH3">
+                                            <rect key="frame" x="374" y="30" width="20" height="20"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="20" id="6Ox-Ox-bug"/>
+                                                <constraint firstAttribute="height" constant="20" id="auN-5d-YYi"/>
+                                            </constraints>
+                                        </imageView>
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="GcJ-Yw-g2L" firstAttribute="top" secondItem="JcK-ep-QuM" secondAttribute="topMargin" id="9Xy-nM-fwa"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="Bl6-PT-BH3" secondAttribute="bottom" constant="19" id="Aiy-bz-Wii"/>
                                         <constraint firstItem="GcJ-Yw-g2L" firstAttribute="leading" secondItem="2Lb-OC-YQm" secondAttribute="trailing" constant="8" symbolic="YES" id="CoH-Jl-kPP"/>
                                         <constraint firstItem="KcW-lc-vho" firstAttribute="top" secondItem="GcJ-Yw-g2L" secondAttribute="bottom" id="LZu-yr-Fvr"/>
+                                        <constraint firstItem="Bl6-PT-BH3" firstAttribute="trailing" secondItem="JcK-ep-QuM" secondAttribute="trailingMargin" id="YFc-jI-OrL"/>
+                                        <constraint firstItem="Bl6-PT-BH3" firstAttribute="top" secondItem="JcK-ep-QuM" secondAttribute="topMargin" constant="19" id="bhv-zY-Otd"/>
                                         <constraint firstItem="2Lb-OC-YQm" firstAttribute="centerY" secondItem="JcK-ep-QuM" secondAttribute="centerY" id="dbP-bu-cux"/>
                                         <constraint firstItem="KcW-lc-vho" firstAttribute="leading" secondItem="2Lb-OC-YQm" secondAttribute="trailing" constant="8" symbolic="YES" id="ftB-Ar-CDR"/>
                                         <constraint firstItem="2Lb-OC-YQm" firstAttribute="leading" secondItem="JcK-ep-QuM" secondAttribute="leading" constant="20" symbolic="YES" id="t83-sO-hk7"/>
@@ -283,6 +293,7 @@
                                     <outlet property="AvatarImageView" destination="2Lb-OC-YQm" id="HKq-p0-dXR"/>
                                     <outlet property="StatsLabel" destination="KcW-lc-vho" id="zkJ-Ka-aTo"/>
                                     <outlet property="UsernameLabel" destination="GcJ-Yw-g2L" id="VyB-73-Py4"/>
+                                    <outlet property="check" destination="Bl6-PT-BH3" id="b14-3w-Phq"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -835,7 +846,6 @@
         <!--Navigation Controller-->
         <scene sceneID="KXM-46-5DA">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Ha9-Rn-wcQ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="GBh-sN-xsJ" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="jWX-Gu-2Os">
@@ -847,6 +857,7 @@
                         <segue destination="AHK-iq-NSG" kind="relationship" relationship="rootViewController" id="fgP-HG-DJc"/>
                     </connections>
                 </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Ha9-Rn-wcQ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="5240.579710144928" y="-946.20535714285711"/>
         </scene>

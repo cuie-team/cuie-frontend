@@ -51,20 +51,40 @@ class InviteTableViewCell: UITableViewCell {
     @IBOutlet weak var AvatarImageView: UIImageView!
     @IBOutlet weak var UsernameLabel: UILabel!
     @IBOutlet weak var StatsLabel: UILabel!
+    @IBOutlet weak var check: UIImageView!
+    
+    var id: String = ""
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+    
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+        
+        if selected {
+            check.image = UIImage(systemName: "checkmark.circle.fill")
+            check.setImageColor(color: UIColor.systemGreen)
+        } else {
+            check.image = UIImage(systemName: "circle")
+            check.setImageColor(color: UIColor.lightGray)
+        }
+    }
     
     override func awakeFromNib() {
         super.awakeFromNib()
     }
     
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-    }
-    
-    
     func configure(contact: ContactInfo) {
         UsernameLabel.text = contact.name+" "+contact.surname
         StatsLabel.text = Shared.decodeStatus(status: contact.status)
         setAvatar(avatarLink: contact.picpath)
+        id = contact.userID
+        self.selectionStyle = .none
     }
     
     private func setAvatar(avatarLink: String?) {

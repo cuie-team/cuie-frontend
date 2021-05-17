@@ -15,8 +15,6 @@ class ChatViewController: UIViewController {
     
     var pullControl: UIRefreshControl!
     
-    let id: [String: Any] = ["sessionID": "12345", "chatroomID": "54321"]
-    
     var chatRooms: [ChatRoom] = []
     
     var isFirstLoad: Bool = true
@@ -74,17 +72,22 @@ class ChatViewController: UIViewController {
         chatTable.delegate = self
         chatTable.dataSource = self
         navigationItem.backButtonDisplayMode = .minimal
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Add", style: .plain, target: self, action: #selector(createGroup))
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(createGroup))
     }
     
     @objc func createGroup() {
-        guard let myVC = self.storyboard?.instantiateViewController(withIdentifier: "InviteVC") else { return }
+        guard let myVC = self.storyboard?.instantiateViewController(withIdentifier: "InviteVC") as? InviteViewController else { return }
+        
+        myVC.reload = {
+            self.getChatRoom()
+        }
         let navController = UINavigationController(rootViewController: myVC)
         
         self.navigationController?.present(navController, animated: true, completion: nil)
     }
     
-    private func getChatRoom(successCompletion: @escaping () -> Void = { }, failedCompletion: @escaping () -> Void = { }) {
+    @objc private func getChatRoom(successCompletion: @escaping () -> Void = { }, failedCompletion: @escaping () -> Void = { }) {
         AF.request(Shared.url + "/user/rooms", method: .get)
             .response { (response) in
                 if let code = response.response?.statusCode {
@@ -183,7 +186,7 @@ extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
             let animation = ChatAnimation(chatTable, animation: type)
             animation.animate(cell: cell, at: indexPath, in: tableView)
         }
-        if indexPath.row == chatRooms.count - 1 {
+        if indexPath.row == 9 {
             isFirstLoad = false
         }
     }
@@ -194,4 +197,8 @@ class ChatViewCellController: UITableViewCell {
     @IBOutlet var name: UILabel!
     @IBOutlet var detail: UILabel!
     @IBOutlet var date: UILabel!
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+    }
 }

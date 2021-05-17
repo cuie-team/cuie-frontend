@@ -87,10 +87,9 @@ class ProfileTableViewController: UITableViewController {
     
     private func startChat() {
         let parameter: [String: String] = [
-            "roomType": "SINGLE",
             "targetID": id
         ]
-        AF.request(Shared.url + "/user/room", method: .post, parameters: parameter, encoder: JSONParameterEncoder.default)
+        AF.request(Shared.url + "/user/room/single", method: .post, parameters: parameter, encoder: JSONParameterEncoder.default)
             .response { (response) in
                 if let code = response.response?.statusCode {
                     switch code {

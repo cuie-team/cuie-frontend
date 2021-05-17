@@ -37,6 +37,9 @@ class MessageBoardViewController: MessagesViewController {
                 self.insertNewMessage(Message(with: chat, sender: chat.search(by: self.members)!))
             }
         }
+        DispatchQueue.main.async {
+            self.messagesCollectionView.scrollToLastItem(animated: true)
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -45,13 +48,38 @@ class MessageBoardViewController: MessagesViewController {
     
     private func setNavigation() {
         let add = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addTapped))
-        if room.members.count == 2 {
-            navigationItem.rightBarButtonItem = add
-        } else {
+        if room.members.count > 2 {
             let leave = UIBarButtonItem(image: UIImage(systemName: "arrowshape.turn.up.right"), style: .plain, target: self, action: #selector(leaveTapped))
             navigationItem.rightBarButtonItems = [leave, add]
         }
+    }
+    
+    private func getSuccessAlert() {
+        let alert = UIAlertController(title: "Created sucessful", message: "Let's talk!", preferredStyle: .alert)
         
+        alert.addAction(UIAlertAction(title: "Close", style: .cancel, handler: nil))
+        
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    private func invite(id: String) {
+        let parameter = ["targetIDs": [id]]
+        
+        AF.request(Shared.url + "/user/room/invite?roomid=" + roomID, method: .post, parameters: parameter, encoder: JSONParameterEncoder.default)
+            .response { (response) in
+                if let code = response.response?.statusCode {
+                    switch code {
+                    case 200:
+                        self.getSuccessAlert()
+                    default:
+                        print("invite failed")
+                    }
+                } else {
+                    print("Cannot get into server")
+                }
+                
+                debugPrint(response)
+            }
     }
     
     @objc func addTapped() {
@@ -62,7 +90,7 @@ class MessageBoardViewController: MessagesViewController {
         }
         alert.addAction(UIAlertAction(title: "Add", style: .default, handler: { (_) in
             let textField = alert.textFields![0]
-            print("Text field: \(textField.text!)")
+            self.invite(id: textField.text!)
         }))
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
         

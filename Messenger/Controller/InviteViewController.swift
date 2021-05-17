@@ -16,10 +16,17 @@ class InviteViewController: UITableViewController {
     
     private let searchController = UISearchController(searchResultsController: nil)
     var pullControl: UIRefreshControl!
+    
+    var selectedId: [String: Bool] = [:]
+    
+    var reload: () -> Void = {}
+    
+    var countSelect: Int = 0
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setUpTable()
         setupReload()
         tableView.tableFooterView = UIView()
         SetupSearchController()
@@ -37,11 +44,84 @@ class InviteViewController: UITableViewController {
         navigationItem.largeTitleDisplayMode = .always
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.navigationBar.sizeToFit()
+        
     }
     
     private func setUpTable() {
-        tableView.delegate = self
-        tableView.dataSource = self
+        tableView.allowsMultipleSelection = true
+        tableView.allowsMultipleSelectionDuringEditing = true
+        
+        let create = UIBarButtonItem(title: "Create", style: .plain, target: self, action: #selector(presentGroupNameAlert))
+                
+        navigationItem.rightBarButtonItem = create
+        navigationItem.rightBarButtonItem?.isEnabled = false
+    }
+    
+    private func getSuccessAlert() {
+        let alert = UIAlertController(title: "Created sucessful", message: "Let's talk!", preferredStyle: .alert)
+        
+        alert.addAction(UIAlertAction(title: "Close", style: .default, handler: { (_) in
+            self.navigationController?.dismiss(animated: true, completion: nil)
+            self.reload()
+        }))
+        
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    @objc func presentGroupNameAlert() {
+        let ids = getSelectedId()
+        
+        let alert = UIAlertController(title: "Create your group's name", message: "Enter group name", preferredStyle: .alert)
+        alert.addTextField { (textfield) in
+            textfield.text = ""
+            textfield.placeholder = "Type group name"
+        }
+        alert.addAction(UIAlertAction(title: "Let's chat!", style: .default, handler: { (_) in
+            let textField = alert.textFields![0]
+            self.createGroup(name: textField.text!, targetIDs: ids)
+        }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        
+        self.present(alert, animated: true, completion: nil)
+    }
+   
+    private func createGroup(name: String, targetIDs: [String]) {
+        let parameter: CreateGroupBody = CreateGroupBody(name: name, targetIDs: targetIDs)
+        
+        AF.request(Shared.url + "/user/room/group", method: .post, parameters: parameter, encoder: JSONParameterEncoder.default)
+            .response { (response) in
+                if let code = response.response?.statusCode {
+                    switch code {
+                    case 200:
+                        self.getSuccessAlert()
+                    default:
+                        print("failed to create group")
+                    }
+                } else {
+                    print("Cannot get into server")
+                }
+
+                debugPrint(response)
+                
+            }
+    }
+    
+    private func goChat(name: String, roomID: String) {
+        let boardVC = MessageBoardViewController()
+        boardVC.title = name
+        boardVC.roomID = roomID
+        
+        navigationController?.pushViewController(boardVC, animated: true)
+    }
+    
+    private func getSelectedId() -> [String] {
+        var ids: [String] = []
+        selectedId.forEach { (id, bool) in
+            if bool {
+                ids.append(id)
+            }
+        }
+        return ids
     }
 
     // MARK: - Table view data source
@@ -57,9 +137,23 @@ class InviteViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
+        guard let cell = tableView.cellForRow(at: indexPath) as? InviteTableViewCell
+        else { return }
         
-        let contacts = searchController.isActive ? filteredContact[indexPath.row] : allContact.all[indexPath.row]
+        selectedId[cell.id]? = true
+        countSelect += 1
+        navigationItem.rightBarButtonItem?.isEnabled = true
+    }
+    
+    override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        guard let cell = tableView.cellForRow(at: indexPath) as? InviteTableViewCell
+        else { return }
+        
+        selectedId[cell.id]? = false
+        countSelect -= 1
+        if countSelect == 0 {
+            navigationItem.rightBarButtonItem?.isEnabled = false
+        }
         
     }
     
@@ -98,6 +192,8 @@ class InviteViewController: UITableViewController {
                             let data = try JSONDecoder().decode(UserContact.self, from: fetchedData)
                             self.allContact = data
                             
+                            self.setIdDict(contacts: self.allContact.all)
+                            
                             self.tableView.reloadData()
                             successCompletion()
                         } catch {
@@ -118,6 +214,14 @@ class InviteViewController: UITableViewController {
         let type = AnimationType.makeMoveUpWithFade(rowHeight: cell.frame.height, duration: 0.3, delayFactor: 0.05)
         let animation = ChatAnimation(tableView, animation: type)
         animation.animate(cell: cell, at: indexPath, in: tableView)
+    }
+    
+    private func setIdDict(contacts: [ContactInfo]) {
+        if selectedId.count == 0 {
+            contacts.forEach { (contact) in
+                selectedId[contact.userID] = false
+            }
+        }
     }
 
 }
@@ -176,5 +280,9 @@ extension InviteViewController: UISearchResultsUpdating, UISearchBarDelegate {
         
         filteredContentForSearchText(searchText: searchText.lowercased(), scopeButton: scopeButton)
     }
-    
+}
+
+struct CreateGroupBody: Codable {
+    let name: String
+    let targetIDs: [String]
 }

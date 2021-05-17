@@ -9,7 +9,8 @@ import Foundation
 
 struct ChatRoom: Codable {
     let roomID: String
-    let name: String
+    let name: String?
+    let picpath: String?
     let roomType: String
     let lastMsg: String?
     let lastMsgTime: String?
@@ -19,14 +20,7 @@ struct ChatRoom: Codable {
     let owner: ContactInfo
     
     func getRoomImg() -> String? {
-        if roomType == "SINGLE" {
-            for info in members {
-                if info.userID != owner.userID {
-                    return info.picpath
-                }
-            }
-        }
-        return nil
+        return self.picpath
     }
 }
 

@@ -19,19 +19,21 @@ class ChatViewController: UIViewController {
     
     var chatRooms: [ChatRoom] = []
     
+    var isFirstLoad: Bool = true
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         extendedLayoutIncludesOpaqueBars = true
         setupReload()
-        chatTable.tableFooterView = UIView()
-        chatTable.delegate = self
-        chatTable.dataSource = self
+        setUpTable()
         
-        navigationItem.backButtonDisplayMode = .minimal
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        SocketIOManager.sharedInstance.getMessage { (_) in
+            self.getChatRoom()
+        }
         chatTable.reloadData()
     }
     
@@ -42,6 +44,7 @@ class ChatViewController: UIViewController {
     override func viewDidDisappear(_ animated: Bool) {
         chatRooms = []
         chatTable.reloadData()
+        isFirstLoad = true
     }
     
     //MARK: - setup pull down refersh action
@@ -64,6 +67,21 @@ class ChatViewController: UIViewController {
         pullControl = UIRefreshControl()
         pullControl.addTarget(self, action: #selector(refresh(_:)), for: .valueChanged)
         self.chatTable.refreshControl = pullControl
+    }
+    
+    private func setUpTable() {
+        chatTable.tableFooterView = UIView()
+        chatTable.delegate = self
+        chatTable.dataSource = self
+        navigationItem.backButtonDisplayMode = .minimal
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Add", style: .plain, target: self, action: #selector(createGroup))
+    }
+    
+    @objc func createGroup() {
+        guard let myVC = self.storyboard?.instantiateViewController(withIdentifier: "InviteVC") else { return }
+        let navController = UINavigationController(rootViewController: myVC)
+        
+        self.navigationController?.present(navController, animated: true, completion: nil)
     }
     
     private func getChatRoom(successCompletion: @escaping () -> Void = { }, failedCompletion: @escaping () -> Void = { }) {
@@ -120,7 +138,7 @@ extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
         let numberOfMembers = chatRooms[indexPath.row].roomType == "GROUP" ?
             " (\(chatRooms[indexPath.row].members.count))": ""
         
-        cell.name?.text = chatRooms[indexPath.row].name + numberOfMembers
+        cell.name?.text = (chatRooms[indexPath.row].name ?? "") + numberOfMembers
         
         cell.detail?.text = chatRooms[indexPath.row].lastMsgContext
         cell.detail?.textColor = .secondaryLabel
@@ -160,10 +178,14 @@ extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        let type = AnimationType.makeMoveUpWithFade(rowHeight: cell.frame.height, duration: 0.5, delayFactor: 0.05)
-        let animation = ChatAnimation(chatTable, animation: type)
-        animation.animate(cell: cell, at: indexPath, in: tableView)
-        
+        if isFirstLoad {
+            let type = AnimationType.makeMoveUpWithFade(rowHeight: cell.frame.height, duration: 0.5, delayFactor: 0.05)
+            let animation = ChatAnimation(chatTable, animation: type)
+            animation.animate(cell: cell, at: indexPath, in: tableView)
+        }
+        if indexPath.row == chatRooms.count - 1 {
+            isFirstLoad = false
+        }
     }
 }
 

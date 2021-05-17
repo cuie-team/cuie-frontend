@@ -22,9 +22,7 @@ class ChatAnimation {
     }
     
     func animate(cell: UITableViewCell, at indexPath: IndexPath, in tableView: UITableView) {
-        guard !hasAnimatedAllCells else {
-            return
-        }
+        guard !hasAnimatedAllCells else { return }
         
         animation(cell, indexPath, tableView)
         

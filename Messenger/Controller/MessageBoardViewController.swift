@@ -33,7 +33,7 @@ class MessageBoardViewController: MessagesViewController {
         SocketIOManager.sharedInstance.getMessage { (messageObj) in
             DispatchQueue.main.async {
                 let chat = ChatInfo(messageID: messageObj["messageID"]!, senderID: messageObj["senderID"]!, message: messageObj["message"]!, messageType: messageObj["messageType"]!, sendtime: messageObj["sendtime"]!)
-                
+
                 self.insertNewMessage(Message(with: chat, sender: chat.search(by: self.members)!))
             }
         }
@@ -73,14 +73,12 @@ class MessageBoardViewController: MessagesViewController {
         print("leave group")
     }
     
-    private func setUser() {
+    private func setUsers() {
         self.currentUser = Sender(senderId: room.owner!.userID, displayName: room.owner!.name)
         
         room.members.forEach { (info) in
             members.append(Sender(senderId: info.userID, displayName: info.name))
         }
-        
-//        self.otherUser = Sender(senderId: "other", displayName: title ?? "Unknown")
     }
     
     private func getMessage() {
@@ -268,21 +266,19 @@ extension MessageBoardViewController: MessagesDataSource, MessagesLayoutDelegate
             let corner: MessageStyle.TailCorner = isFromCurrentSender(message: message) ? .bottomRight : .bottomLeft
             
             if indexPath.section == 0 { return .bubbleTail(corner, .curved) }
-            else {
-                let isSameSender = message.sender.senderId == messages[indexPath.section - 1].sender.senderId
-                
-                if isSameSender {
-                    let interval = message.sentDate.timeIntervalSinceReferenceDate - messages[indexPath.section - 1].sentDate.timeIntervalSinceReferenceDate
-                    
-                    if interval < 300 {
-                        return .bubble
-                    } else {
-                        return .bubbleTail(corner, .curved)
-                    }
-                    
+            
+            let isSameSender = message.sender.senderId == messages[indexPath.section - 1].sender.senderId
+            
+            if isSameSender {
+                let interval = message.sentDate.timeIntervalSinceReferenceDate - messages[indexPath.section - 1].sentDate.timeIntervalSinceReferenceDate
+                if interval < 300 {
+                    return .bubble
                 } else {
                     return .bubbleTail(corner, .curved)
                 }
+                
+            } else {
+                return .bubbleTail(corner, .curved)
             }
         default:
             return .bubble
@@ -383,7 +379,7 @@ extension MessageBoardViewController {
                             
                             self.room = data
                             
-                            self.setUser()
+                            self.setUsers()
                             self.getMessage()
                             self.setNavigation()
                             self.messagesCollectionView.reloadData()

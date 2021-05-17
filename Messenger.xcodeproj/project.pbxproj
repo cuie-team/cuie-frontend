@@ -11,6 +11,7 @@
 		2204B49C26412DFA003CDE37 /* ChatRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204B49B26412DFA003CDE37 /* ChatRoom.swift */; };
 		2204B4A52641BAE6003CDE37 /* Socket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204B4A42641BAE6003CDE37 /* Socket.swift */; };
 		222980922650168200A9A751 /* ChatAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222980912650168200A9A751 /* ChatAnimation.swift */; };
+		222A5B232652583F005BBFE1 /* InviteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222A5B222652583B005BBFE1 /* InviteViewController.swift */; };
 		2248A075260A0AC90083AE7F /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2248A074260A0AC90083AE7F /* TabBarController.swift */; };
 		2248A078260A10750083AE7F /* TabBarStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2248A077260A10750083AE7F /* TabBarStoryboard.storyboard */; };
 		2248A08B260A57520083AE7F /* SpinnerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2248A08A260A57520083AE7F /* SpinnerViewController.swift */; };
@@ -44,6 +45,7 @@
 		2204B49B26412DFA003CDE37 /* ChatRoom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoom.swift; sourceTree = "<group>"; };
 		2204B4A42641BAE6003CDE37 /* Socket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Socket.swift; sourceTree = "<group>"; };
 		222980912650168200A9A751 /* ChatAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatAnimation.swift; sourceTree = "<group>"; };
+		222A5B222652583B005BBFE1 /* InviteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteViewController.swift; sourceTree = "<group>"; };
 		2248A074260A0AC90083AE7F /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		2248A077260A10750083AE7F /* TabBarStoryboard.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = TabBarStoryboard.storyboard; sourceTree = "<group>"; };
 		2248A08A260A57520083AE7F /* SpinnerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpinnerViewController.swift; sourceTree = "<group>"; };
@@ -111,6 +113,7 @@
 				F260C9C02633FA28006E7E81 /* ContactTableViewCell.swift */,
 				F260C9C32633FA90006E7E81 /* ContactTableViewController.swift */,
 				F2A580462637293D001B0DA3 /* ProfileTableViewController.swift */,
+				222A5B222652583B005BBFE1 /* InviteViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -332,6 +335,7 @@
 				22F0E36D263497AD00851E47 /* UIImageCustom.swift in Sources */,
 				2248A08B260A57520083AE7F /* SpinnerViewController.swift in Sources */,
 				2270AFF426443C75002094DB /* Profile.swift in Sources */,
+				222A5B232652583F005BBFE1 /* InviteViewController.swift in Sources */,
 				22F0E3632634315100851E47 /* Message.swift in Sources */,
 				F260C9C12633FA28006E7E81 /* ContactTableViewCell.swift in Sources */,
 				F2A580472637293D001B0DA3 /* ProfileTableViewController.swift in Sources */,

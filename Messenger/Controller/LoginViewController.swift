@@ -185,9 +185,9 @@ extension LoginViewController {
     }
     
     private func logIn() {
-//        let parameter = User(userID: StudentNumberTextField.text!, password: PasswordTextField.text!)
+        let parameter = User(userID: StudentNumberTextField.text!, password: PasswordTextField.text!)
         
-        let parameter = User(userID: "6231341521", password: "passwordKongPonEk")
+//        let parameter = User(userID: "6231341521", password: "passwordKongPonEk")
 
         let request = AF.request(Shared.url + "/signin", method: .post, parameters: parameter, encoder: JSONParameterEncoder.default)
 

@@ -3,24 +3,30 @@ PODS:
   - InputBarAccessoryView (5.3.0):
     - InputBarAccessoryView/Core (= 5.3.0)
   - InputBarAccessoryView/Core (5.3.0)
+  - Kingfisher (6.3.0)
   - MessageKit (3.5.1):
     - InputBarAccessoryView (~> 5.3.0)
-  - Socket.IO-Client-Swift (15.2.0):
-    - Starscream (~> 3.1)
-  - Starscream (3.1.1)
+  - netfox (1.19.0)
+  - Socket.IO-Client-Swift (16.0.1):
+    - Starscream (~> 4.0)
+  - Starscream (4.0.4)
   - SwiftyJSON (4.3.0)
 
 DEPENDENCIES:
   - Alamofire (~> 5.2)
+  - Kingfisher (~> 6.0)
   - MessageKit
-  - Socket.IO-Client-Swift (~> 15.2.0)
+  - netfox
+  - Socket.IO-Client-Swift (~> 16.0.0)
   - SwiftyJSON (~> 4.0)
 
 SPEC REPOS:
   trunk:
     - Alamofire
     - InputBarAccessoryView
+    - Kingfisher
     - MessageKit
+    - netfox
     - Socket.IO-Client-Swift
     - Starscream
     - SwiftyJSON
@@ -28,11 +34,13 @@ SPEC REPOS:
 SPEC CHECKSUMS:
   Alamofire: 2291f7d21ca607c491dd17642e5d40fdcda0e65c
   InputBarAccessoryView: 1638fc3336698eaead9cd83ff2da6c6218fcb6bc
+  Kingfisher: 6c3df386db71d82c0817a429d2c9421a77396529
   MessageKit: 6a15a240a9a4767279de542a8fae861e83d8aedc
-  Socket.IO-Client-Swift: 1e3e3a1f09f3312a167f0d781eb2f383d477357c
-  Starscream: 4bb2f9942274833f7b4d296a55504dcfc7edb7b0
+  netfox: efeec1d23406df6cd605212f09a40957bb5654eb
+  Socket.IO-Client-Swift: c116d6dc9fd6be9c259bacfe143f8725bce7d79e
+  Starscream: 5178aed56b316f13fa3bc55694e583d35dd414d9
   SwiftyJSON: 6faa0040f8b59dead0ee07436cbf76b73c08fd08
 
-PODFILE CHECKSUM: ea3e1a2f4d91b83129e665428f3d69cb4ce89264
+PODFILE CHECKSUM: 406c1d25efefc4ac5a93f4f79bb3883e63b2ee80
 
 COCOAPODS: 1.9.3

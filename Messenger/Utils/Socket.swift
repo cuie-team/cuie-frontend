@@ -7,46 +7,43 @@
 
 import Foundation
 import SocketIO
-import SwiftyJSON
 
 class SocketIOManager: NSObject {
     static let sharedInstance = SocketIOManager()
     
+    private let manager = SocketManager(socketURL: URL(string: Shared.url)!, config: [.log(false), .compress])
+    
+    private var socket: SocketIOClient!
+    
     override private init() {
         super.init()
-    }
-    
-    private var socket: SocketIOClient {
-        let manager = SocketManager(socketURL: URL(string: Shared.url)!,
-                                    config: [.log(true), .compress])
         
-        return manager.defaultSocket
-    }
-    
-    func testToServer() {
-        let test = ["test": "Pon-ek_cpcu"]
-        socket.emit("???", test)
-    }
-    
-    func testGetFromServer() {
-        socket.on("???") { (dataArray, ack) in
-            print(dataArray)
+        socket = manager.defaultSocket
+        socket.on(clientEvent: .connect) {data, _ in
+            print("socket connected")
         }
+        
+        socket.on("signin:response") { (data, _) in
+            print(data)
+        }
+        
+        socket.on("chat:send:response") { (data, _) in
+            print(data)
+        }
+        
     }
     
-    func connectToServerWithId(id: [String: Any]) {
-        socket.emit("session_id", id)
+    func signin(user: User) {
+        socket.emit("signin", user.dictionary!)
     }
     
-    func sendMessage(message: String, with id: String) {
-        socket.emit("chatMessage", id, message)
+    func sendMessage(message: MessageObject) {
+        socket.emit("chat:send", message.dictionary!)
     }
     
-    func getMessage(completionHandler: @escaping (_ messagesInfo: [String: AnyObject]) -> Void) {
-        socket.on("newMessage") { (dataArray, ack) in
-            let messageDictionary = [String: AnyObject]()
-            
-            completionHandler(messageDictionary)
+    func getMessage(completionHandler: @escaping (_ messagesInfo: [String: String]) -> Void) {
+        socket.on("chat:receive") { (dataArray, _) in
+            completionHandler(dataArray[0] as! [String : String])
         }
     }
     

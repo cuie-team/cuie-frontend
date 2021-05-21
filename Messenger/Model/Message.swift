@@ -21,6 +21,20 @@ struct Message: MessageType, Equatable {
     static func == (lhs: Message, rhs: Message) -> Bool {
         return lhs.messageId == rhs.messageId
     }
+    
+    init(sender: SenderType, messageId: String, text: String) {
+        self.sender = sender
+        self.messageId = messageId
+        self.sentDate = Date()
+        self.kind = .text(text)
+    }
+    
+    init(with chat: ChatInfo, sender: SenderType) {
+        self.sender = sender
+        self.messageId = chat.messageID
+        self.sentDate = Date().textISOToDate(text: chat.sendtime)
+        self.kind = .text(chat.message)
+    }
 }
 
 extension MessageKind {
@@ -31,4 +45,10 @@ extension MessageKind {
         default: return ""
         }
     }
+}
+
+struct MessageObject: Codable {
+    let roomID: String
+    let message: String
+    let messageType: String
 }

@@ -8,53 +8,122 @@
 import UIKit
 import MessageKit
 import InputBarAccessoryView
+import Alamofire
 
 class MessageBoardViewController: MessagesViewController {
     
     var currentUser: Sender!
     
-    var otherUser: Sender!
+    var members: [Sender] = []
+    
+    var roomID: String = ""
+    
+    var room: RoomInfo = RoomInfo()
     
     var messages: [Message] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setUser()
-        getMessage()
         setCollectionView()
         setInputBar()
     }
     
-    private func setUser() {
-        self.currentUser = Sender(senderId: "self", displayName: "Tim-Cook")
-        self.otherUser = Sender(senderId: "other", displayName: title ?? "Unknown")
+    override func viewDidAppear(_ animated: Bool) {
+        SocketIOManager.sharedInstance.getMessage { (messageObj) in
+            DispatchQueue.main.async {
+                let chat = ChatInfo(messageID: messageObj["messageID"]!, senderID: messageObj["senderID"]!, message: messageObj["message"]!, messageType: messageObj["messageType"]!, sendtime: messageObj["sendtime"]!)
+
+                self.insertNewMessage(Message(with: chat, sender: chat.search(by: self.members)!))
+            }
+        }
+        DispatchQueue.main.async {
+            self.messagesCollectionView.scrollToLastItem(animated: true)
+        }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        getRoomInfo()
+    }
+    
+    private func setNavigation() {
+        let add = UIBarButtonItem(image: UIImage(systemName: "person.crop.circle.badge.plus"), style: .plain, target: self, action: #selector(addTapped))
+//        let add = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addTapped))
+        if room.members.count > 2 {
+            let leave = UIBarButtonItem(image: UIImage(systemName: "arrowshape.turn.up.right"), style: .plain, target: self, action: #selector(leaveTapped))
+            navigationItem.rightBarButtonItems = [leave, add]
+        }
+    }
+    
+    private func presentSuccessAlert() {
+        let alert = UIAlertController(title: "Invitation has been sent", message: "Let's talk!", preferredStyle: .alert)
+        
+        alert.addAction(UIAlertAction(title: "Close", style: .cancel, handler: nil))
+        
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    private func presentDuplicateIdAlert() {
+        let alert = UIAlertController(title: "Invite failed", message: "This ID has been in this group.", preferredStyle: .alert)
+        
+        alert.addAction(UIAlertAction(title: "Close", style: .cancel, handler: nil))
+        
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    private func invite(id: String) {
+        let parameter = ["targetIDs": [id]]
+        
+        AF.request(Shared.url + "/user/room/invite?roomid=" + roomID, method: .post, parameters: parameter, encoder: JSONParameterEncoder.default)
+            .response { (response) in
+                if let code = response.response?.statusCode {
+                    switch code {
+                    case 200:
+                        self.presentSuccessAlert()
+                    case 422:
+                        self.presentDuplicateIdAlert()
+                    default:
+                        print("invite failed")
+                    }
+                } else {
+                    print("Cannot get into server")
+                }
+                
+                debugPrint(response)
+            }
+    }
+    
+    @objc func addTapped() {
+        let alert = UIAlertController(title: "Add to group", message: "Please enter UserID", preferredStyle: .alert)
+        alert.addTextField { (textfield) in
+            textfield.text = ""
+            textfield.placeholder = "Invite by UserID"
+        }
+        alert.addAction(UIAlertAction(title: "Add", style: .default, handler: { (_) in
+            let textField = alert.textFields![0]
+            self.invite(id: textField.text!)
+        }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        
+        self.present(alert, animated: true)
+    }
+    
+    @objc func leaveTapped() {
+        print("leave group")
+    }
+    
+    private func setUsers() {
+        self.currentUser = Sender(senderId: room.owner!.userID, displayName: room.owner!.name)
+        
+        room.members.forEach { (info) in
+            members.append(Sender(senderId: info.userID, displayName: info.name))
+        }
     }
     
     private func getMessage() {
-        messages.append(Message(
-                            sender: currentUser,
-                            messageId: UUID().uuidString,
-                            sentDate: Date().addingTimeInterval(-96400),
-                            kind: .text("Hello!!")))
-        
-        messages.append(Message(
-                            sender: otherUser,
-                            messageId: UUID().uuidString,
-                            sentDate: Date().addingTimeInterval(-86200),
-                            kind: .text("How's it going")))
-        
-        messages.append(Message(
-                            sender: currentUser,
-                            messageId: UUID().uuidString,
-                            sentDate: Date().addingTimeInterval(-6400),
-                            kind: .text("Covid19 spreading")))
-        
-        messages.append(Message(
-                            sender: currentUser,
-                            messageId: UUID().uuidString,
-                            sentDate: Date().addingTimeInterval(-6200),
-                            kind: .text("Sad")))
+        room.chats?.forEach({ (chat) in
+            messages.append(Message(with: chat, sender: chat.search(by: members)!))
+        })
     }
     
     private func setCollectionView() {
@@ -180,8 +249,9 @@ extension MessageBoardViewController: MessagesDataSource, MessagesLayoutDelegate
     
     func configureAvatarView(_ avatarView: AvatarView, for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) {
         
-        if let image = UIImage(named: message.sender.displayName) {
-            avatarView.image = image
+        if let path = room.getAvatar(by: message.sender.senderId) {
+            let url = URL(string: Shared.url + path)
+            avatarView.kf.setImage(with: url)
         } else {
             avatarView.image = UIImage(named: "avatar")
         }
@@ -235,21 +305,19 @@ extension MessageBoardViewController: MessagesDataSource, MessagesLayoutDelegate
             let corner: MessageStyle.TailCorner = isFromCurrentSender(message: message) ? .bottomRight : .bottomLeft
             
             if indexPath.section == 0 { return .bubbleTail(corner, .curved) }
-            else {
-                let isSameSender = message.sender.senderId == messages[indexPath.section - 1].sender.senderId
-                
-                if isSameSender {
-                    let interval = message.sentDate.timeIntervalSinceReferenceDate - messages[indexPath.section - 1].sentDate.timeIntervalSinceReferenceDate
-                    
-                    if interval < 300 {
-                        return .bubble
-                    } else {
-                        return .bubbleTail(corner, .curved)
-                    }
-                    
+            
+            let isSameSender = message.sender.senderId == messages[indexPath.section - 1].sender.senderId
+            
+            if isSameSender {
+                let interval = message.sentDate.timeIntervalSinceReferenceDate - messages[indexPath.section - 1].sentDate.timeIntervalSinceReferenceDate
+                if interval < 300 {
+                    return .bubble
                 } else {
                     return .bubbleTail(corner, .curved)
                 }
+                
+            } else {
+                return .bubbleTail(corner, .curved)
             }
         default:
             return .bubble
@@ -303,8 +371,11 @@ extension MessageBoardViewController: MessagesDataSource, MessagesLayoutDelegate
     
     //MARK: - setup for InputBarAccessoryViewDelegate
     func inputBar(_ inputBar: InputBarAccessoryView, didPressSendButtonWith text: String) {
-        let message = Message(sender: currentUser, messageId: String(messages.count + 1), sentDate: Date(), kind: .photo(Media(url: nil, image: UIImage(named: "Tim-Cook"), placeholderImage: UIImage(named: "Tim-Cook")!, size: CGSize(width: 250, height: 200))))
+        let message = Message(sender: currentUser, messageId: "\(messages.count + 1)", text: text)
         
+        let messageObject = MessageObject(roomID: roomID, message: text, messageType: "TEXT")
+        
+        SocketIOManager.sharedInstance.sendMessage(message: messageObject)
         insertNewMessage(message)
 
         inputBar.inputTextView.text = ""
@@ -331,4 +402,40 @@ extension MessageBoardViewController: MessageCellDelegate {
             break
         }
     }
+}
+
+extension MessageBoardViewController {
+    //MARK:- Get room information
+    private func getRoomInfo() {
+        AF.request(Shared.url + "/user/room/info?roomid=" + roomID, method: .get)
+            .response { (response) in
+                if let code = response.response?.statusCode {
+                    switch code {
+                    case 200:
+                        do {
+                            guard let fetchedData = response.data else { return }
+                            let data = try JSONDecoder().decode(RoomInfo.self, from: fetchedData)
+                            
+                            self.room = data
+                            
+                            self.setUsers()
+                            self.getMessage()
+                            self.setNavigation()
+                            self.messagesCollectionView.reloadData()
+                            
+                        } catch {
+                            print("Cannot decode roomInfo json")
+                        }
+                    default:
+                        print("Error reqeust")
+                    }
+                } else {
+                    print("Cannot get into server")
+                }
+                
+                debugPrint(response)
+            }
+        
+    }
+    
 }

@@ -7,6 +7,7 @@
 
 import UIKit
 import Alamofire
+import Kingfisher
 
 class ChatViewController: UIViewController {
 
@@ -14,27 +15,34 @@ class ChatViewController: UIViewController {
     
     var pullControl: UIRefreshControl!
     
-    let id: [String: Any] = ["sessionID": "12345", "chatroomID": "54321"]
-    
     var chatRooms: [ChatRoom] = []
+    
+    var isFirstLoad: Bool = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         extendedLayoutIncludesOpaqueBars = true
         setupReload()
-        chatTable.tableFooterView = UIView()
-        chatTable.delegate = self
-        chatTable.dataSource = self
+        setUpTable()
         
-        navigationItem.backButtonDisplayMode = .minimal
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        SocketIOManager.sharedInstance.getMessage { (_) in
+            self.getChatRoom()
+        }
+        chatTable.reloadData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         getChatRoom()
-        
-        SocketIOManager.sharedInstance.establishConnection()
-        SocketIOManager.sharedInstance.connectToServerWithId(id: id)
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        chatRooms = []
+        chatTable.reloadData()
+        isFirstLoad = true
     }
     
     //MARK: - setup pull down refersh action
@@ -59,7 +67,27 @@ class ChatViewController: UIViewController {
         self.chatTable.refreshControl = pullControl
     }
     
-    private func getChatRoom(successCompletion: @escaping () -> Void = { }, failedCompletion: @escaping () -> Void = { }) {
+    private func setUpTable() {
+        chatTable.tableFooterView = UIView()
+        chatTable.delegate = self
+        chatTable.dataSource = self
+        navigationItem.backButtonDisplayMode = .minimal
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(createGroup))
+    }
+    
+    @objc func createGroup() {
+        guard let myVC = self.storyboard?.instantiateViewController(withIdentifier: "InviteVC") as? InviteViewController else { return }
+        
+        myVC.reload = {
+            self.getChatRoom()
+        }
+        let navController = UINavigationController(rootViewController: myVC)
+        
+        self.navigationController?.present(navController, animated: true, completion: nil)
+    }
+    
+    @objc private func getChatRoom(successCompletion: @escaping () -> Void = { }, failedCompletion: @escaping () -> Void = { }) {
         AF.request(Shared.url + "/user/rooms", method: .get)
             .response { (response) in
                 if let code = response.response?.statusCode {
@@ -73,7 +101,7 @@ class ChatViewController: UIViewController {
                             self.chatTable.reloadData()
                             successCompletion()
                         } catch {
-                            print("Cannot decode contact json")
+                            print("Cannot decode chat json")
                         }
                     default:
                         failedCompletion()
@@ -81,7 +109,6 @@ class ChatViewController: UIViewController {
                 } else {
                     print("Cannot get into server")
                 }
-                
                 debugPrint(response)
             }
     }
@@ -93,36 +120,47 @@ extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        let date = Date().textISOToDate(text: chatRooms[indexPath.row].lastMsgTime)
-        let formatter = DateFormatter()
-        var dateText = ""
-        
-        if Calendar.current.isDateInToday(date) {
-            formatter.dateFormat = "HH:mm"
-            dateText = "Today, "
-        } else {
-            formatter.dateFormat = "MM/dd/yyyy"
-        }
-        
-        dateText += "\(formatter.string(from: date))"
-        
         let cell = tableView.dequeueReusableCell(withIdentifier: "chat_cell", for: indexPath) as! ChatViewCellController
         
-        cell.name?.text = chatRooms[indexPath.row].name
+        var dateText = ""
         
-        cell.detail?.text = chatRooms[indexPath.row].lastMsg
+        if let msgTime = chatRooms[indexPath.row].lastMsgTime {
+            let date = Date().textISOToDate(text: msgTime)
+            let formatter = DateFormatter()
+            
+            if Calendar.current.isDateInToday(date) {
+                formatter.dateFormat = "HH:mm"
+                dateText = "Today, "
+            } else {
+                formatter.dateFormat = "MM/dd/yyyy"
+            }
+            
+            dateText += "\(formatter.string(from: date))"
+        }
+        
+        let numberOfMembers = chatRooms[indexPath.row].roomType == "GROUP" ?
+            " (\(chatRooms[indexPath.row].members.count))": ""
+        
+        cell.name?.text = (chatRooms[indexPath.row].name ?? "") + numberOfMembers
+        
+        cell.detail?.text = chatRooms[indexPath.row].lastMsgContext
         cell.detail?.textColor = .secondaryLabel
         
         cell.date?.text = dateText
         cell.date?.textColor = .secondaryLabel
         
-        if let image = UIImage(named: chatRooms[indexPath.row].name) {
-            cell.avatar?.image = image.circleMasked
+        if let path = chatRooms[indexPath.row].getRoomImg() {
+            let url = URL(string: Shared.url + path)
+            
+            let imageView = UIImageView()
+            imageView.kf.setImage(with: url)
+            cell.avatar.image =  imageView.image?.circleMasked
+            
+//            cell.avatar.kf.setImage(with: url)
+//            cell.avatar.roundedImage()
         } else {
             cell.avatar?.image = UIImage(named: "avatar")
         }
-        
         
         return cell
     }
@@ -137,10 +175,21 @@ extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
         
         let boardVC = MessageBoardViewController()
         boardVC.title = chatRooms[indexPath.row].name
+        boardVC.roomID = chatRooms[indexPath.row].roomID
         
         navigationController?.pushViewController(boardVC, animated: true)
     }
     
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if isFirstLoad {
+            let type = AnimationType.makeMoveUpWithFade(rowHeight: cell.frame.height, duration: 0.5, delayFactor: 0.05)
+            let animation = ChatAnimation(chatTable, animation: type)
+            animation.animate(cell: cell, at: indexPath, in: tableView)
+        }
+        if indexPath.row == 9 {
+            isFirstLoad = false
+        }
+    }
 }
 
 class ChatViewCellController: UITableViewCell {
@@ -148,4 +197,8 @@ class ChatViewCellController: UITableViewCell {
     @IBOutlet var name: UILabel!
     @IBOutlet var detail: UILabel!
     @IBOutlet var date: UILabel!
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+    }
 }

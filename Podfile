@@ -12,5 +12,5 @@ pod 'Socket.IO-Client-Swift', '~> 16.0.0'
 pod 'MessageKit'
 pod 'SwiftyJSON', '~> 4.0'
 pod 'Kingfisher', '~> 6.0'
-
+pod 'netfox'
 end

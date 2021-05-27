@@ -2,7 +2,7 @@
 
 # CUIE
 ## What is this app?
-CUIE application is the variety app for CU engineering students. We could chat to friends, professors and staff. We also have feed to keep up what's on trend right now in our university.
+CUIE application is the variety app for CU engineering students. We could chat to friends, professors and staff. We also have feed views to keep up what's on trend right now in our university.
 Many useful features provided in CUIE application.
 
 ## Description

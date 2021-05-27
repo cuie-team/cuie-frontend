@@ -5,7 +5,7 @@
 CUIE application is the variety app for CU engineering students. We could chat to friends, professors and staff. We also have feed to keep up what's on trend right now in our university.
 Many useful features provided in CUIE application.
 
-## Detail
+## Description
 We used MessageKit to build the interface of our chat view in MessageBoardController.swift. 
 Main pages of the application is built with UITabBarController. Since we build chat app, we use socket.io to deal with the incoming message. 
 The socket is written in Utils group. We use singleton design to deal capture an instance of our socket. 

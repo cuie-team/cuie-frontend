@@ -107,6 +107,22 @@ private func setCollectionView() {
         navigationItem.largeTitleDisplayMode = .never
     }
 ```
+### Kingfisher
+We use Kingfisher framework to get images from the server. With this frame work, we can quickly set up the image for our UIImageView.
+In ContactTableView.swift file, 
+```swift
+private func setAvatar(avatarLink: String?) {
+        if let url = avatarLink {
+            let path = URL(string: Shared.url + url)
+            
+            let imageView = UIImageView()
+            imageView.kf.setImage(with: path)
+            self.AvatarImageView.image =  imageView.image?.circleMasked
+        } else {
+            self.AvatarImageView.image = UIImage(named: "avatar")
+        }
+    }
+```
 
 ## Frameworks
 * [Socket.io](https://github.com/socketio/socket.io-client-swift)
@@ -114,6 +130,8 @@ private func setCollectionView() {
 * [Alamofire](https://github.com/Alamofire/Alamofire)
 
 * [MessageKit](https://github.com/MessageKit/MessageKit)
+
+* [Kingfisher](https://github.com/onevcat/Kingfisher)
 
 ## Requirements
 * iOS 13.0+
